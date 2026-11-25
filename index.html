@@ -234,7 +234,24 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outlin
 .misslist li b { color: var(--ok); }
 .cheat h3 { display: flex; gap: 8px; align-items: center; }
 .foot { font-size: 0.8rem; color: var(--muted); text-align: center; }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+/* login gate */
+.gate { min-height: 75vh; display: flex; align-items: center; justify-content: center; }
+.gate .panel { width: 100%; max-width: 380px; align-items: center; text-align: center; gap: 16px; padding: 28px 22px; }
+.gate .heart { width: 44px; height: 44px; color: var(--bad); }
+.gate form { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+.gate input.code {
+  width: 100%; min-height: 60px; font-family: var(--font-display); font-size: 1.8rem; font-weight: 600;
+  letter-spacing: 0.5em; text-indent: 0.5em; text-align: center; font-variant-numeric: tabular-nums;
+  padding: 10px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink);
+}
+.gate input.code::placeholder { color: var(--line); }
+.gate input.code:focus { outline: 3px solid var(--accent); outline-offset: 1px; }
+.gate .msg { min-height: 1.4em; font-size: 0.92rem; color: var(--bad); }
+.gate .msg.ok { color: var(--ok); }
+.shake { animation: shake .4s; }
+@keyframes shake { 20%,60% { transform: translateX(-8px); } 40%,80% { transform: translateX(8px); } }
+.linkbtn { background: none; border: 0; color: var(--muted); text-decoration: underline; font-size: 0.8rem; padding: 8px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; animation: none !important; } }
 </style>
 </head><body>
 
@@ -493,6 +510,50 @@ const TREE = [
     hint: { ante: "先行詞是 The museum。", poss: "空格後是動詞 was，不是名詞。", full: "was renovated 少了主詞，不完整。", who: "museum 是物。" } }
 ];
 
+/* =================== LOGIN GATE =================== */
+/* Filled in by build.sh from gate.txt; empty hash = no login screen. */
+const GATE = { salt: "01cb1d7b4f6b20a3ced34acd018669f1", hash: "8dd6136fa017b26a4a9706555d1f449c0c60f807813a31fada69aebd9b1ee4e7" };
+const GATE_KEY = "toeic-gate";
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+function unlocked() { try { return localStorage.getItem(GATE_KEY) === GATE.hash; } catch (e) { return false; } }
+function logout() { try { localStorage.removeItem(GATE_KEY); } catch (e) {} gate(); }
+function gate() {
+  screen(`
+    <div class="gate">
+      <section class="panel" id="gatecard">
+        <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 4.3 2.4.2.3.6.3.8 0 .7-1.2 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+        <span class="eyebrow">多益 Part 5 特訓</span>
+        <h2>先輸入我們的紀念日</h2>
+        <form id="gateform" novalidate>
+          <label for="anniv" class="muted" style="font-size:.88rem">輸入月份和日期，共四個數字</label>
+          <input class="code" id="anniv" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="MMDD" required>
+          <button class="btn" type="submit">進入</button>
+          <p class="msg" id="gatemsg" role="status"></p>
+        </form>
+      </section>
+    </div>`);
+  const form = app.querySelector("#gateform"), input = app.querySelector("#anniv"), msg = app.querySelector("#gatemsg"), card = app.querySelector("#gatecard");
+  input.oninput = () => { input.value = input.value.replace(/\D/g, "").slice(0, 4); if (input.value.length === 4) form.requestSubmit(); };
+  form.onsubmit = async e => {
+    e.preventDefault();
+    const code = input.value.replace(/\D/g, "").padStart(4, "0");
+    if (!/[1-9]/.test(code)) { msg.className = "msg"; msg.textContent = "先輸入四個數字喔"; return; }
+    let ok = false;
+    try { ok = (await sha256(GATE.salt + code)) === GATE.hash; } catch (err) { ok = false; }
+    if (ok) {
+      try { localStorage.setItem(GATE_KEY, GATE.hash); } catch (err) {}
+      msg.className = "msg ok"; msg.textContent = "答對了，歡迎回來！";
+      setTimeout(home, 700);
+    } else {
+      msg.className = "msg"; msg.textContent = "不是這天喔，再想想看"; input.value = "";
+      card.classList.remove("shake"); void card.offsetWidth; card.classList.add("shake");
+    }
+  };
+}
+
 /* =================== STORAGE =================== */
 const KEY = "toeic-p5-v1";
 let store = {};
@@ -594,7 +655,8 @@ function home() {
     <div class="modes">
       ${MODES.map((m, i) => `<button class="mode" data-m="${i}"><strong>${m.name}</strong><span class="d">${m.d}</span><span class="for">${m.for.map(f => `<span class="tag">${f}</span>`).join("")}</span></button>`).join("")}
     </div>
-    <p class="foot">進度只存在這台裝置的瀏覽器裡。</p>`);
+    <p class="foot">進度只存在這台裝置的瀏覽器裡。${GATE.hash ? `<br><button class="linkbtn" id="logout">登出</button>` : ""}</p>`);
+  const lo = app.querySelector("#logout"); if (lo) lo.onclick = logout;
   app.querySelectorAll(".topic").forEach(b => b.onclick = () => lesson(TOPICS[+b.dataset.t]));
   app.querySelectorAll(".mode").forEach(b => b.onclick = () => MODES[+b.dataset.m].run());
   app.querySelector("#mix").onclick = () => quiz(shuffle(allQs()).slice(0, 10), "綜合練習");
@@ -930,6 +992,6 @@ function cheat() {
   bindBack();
 }
 
-home();
+if (!GATE.hash || unlocked()) home(); else gate();
 </script>
 </body></html>
