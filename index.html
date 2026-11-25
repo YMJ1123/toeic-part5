@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="多益特訓">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F3F5F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F131B" media="(prefers-color-scheme: dark)">
+<meta name="robots" content="noindex">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>多益 Part 5 特訓</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: one narrow column like a test booklet; choices drawn as answer-sheet bubbles. */
+:root {
+  --bg: #F3F5F9;
+  --surface: #FFFFFF;
+  --line: #DCE1EA;
+  --ink: #18202E;
+  --muted: #5A6476;
+  --accent: #2A55C9;
+  --accent-soft: #E6ECFB;
+  --mark: #FFE27A;
+  --mark-ink: #18202E;
+  --ok: #1D8253;
+  --ok-soft: #E3F4EB;
+  --bad: #C23B34;
+  --bad-soft: #FBE7E5;
+  --font-display: "Space Grotesk", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  --font-body: "Inter", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F131B; --surface: #171D28; --line: #2A3242; --ink: #E5E9F1; --muted: #98A1B3;
+    --accent: #86A6FF; --accent-soft: #1E2A47; --mark: #5C4C0E; --mark-ink: #FFE9A0;
+    --ok: #5FD39A; --ok-soft: #133426; --bad: #FF8A80; --bad-soft: #3A1A18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F131B; --surface: #171D28; --line: #2A3242; --ink: #E5E9F1; --muted: #98A1B3;
+  --accent: #86A6FF; --accent-soft: #1E2A47; --mark: #5C4C0E; --mark-ink: #FFE9A0;
+  --ok: #5FD39A; --ok-soft: #133426; --bad: #FF8A80; --bad-soft: #3A1A18; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body);
+  font-size: 16px; line-height: 1.6; -webkit-text-size-adjust: 100%;
+}
+.wrap {
+  max-width: 680px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 48px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.25; }
+h1 { font-size: 1.75rem; letter-spacing: -0.01em; }
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1.05rem; }
+p { margin: 0; }
+.eyebrow { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.muted { color: var(--muted); }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* header */
+.top { display: flex; flex-direction: column; gap: 6px; }
+.stats { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stat b { color: var(--ink); font-weight: 600; }
+.section-title { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; }
+
+/* topic list */
+.topics { display: flex; flex-direction: column; gap: 10px; }
+.topic {
+  display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 14px 16px; text-align: left; width: 100%;
+}
+.topic:active, .mode:active { transform: scale(0.99); }
+.topic .num { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-family: var(--font-display); font-weight: 700; }
+.topic .t { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.topic .t span { font-size: 0.85rem; color: var(--muted); }
+.meter { width: 64px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.meter i { display: block; width: 100%; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.meter i::after { content: ""; display: block; height: 100%; width: var(--p, 0%); background: var(--ok); }
+
+/* practice formats */
+.modes { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 520px) { .modes { grid-template-columns: 1fr 1fr; } }
+.mode {
+  display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px;
+}
+.mode strong { font-family: var(--font-display); font-size: 1.02rem; }
+.mode span.d { font-size: 0.88rem; color: var(--muted); }
+.mode .for { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn { border: 0; border-radius: 12px; padding: 12px 18px; font-weight: 600; min-height: 48px; background: var(--accent); color: var(--surface); }
+.btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.btn.grow { flex: 1 1 160px; }
+.back { align-self: flex-start; background: none; border: 0; color: var(--accent); font-weight: 600; padding: 6px 0; min-height: 44px; }
+
+/* rules */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.rules { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.rule { display: flex; flex-direction: column; gap: 4px; padding-bottom: 12px; border-bottom: 1px dashed var(--line); }
+.rule:last-child { border-bottom: 0; padding-bottom: 0; }
+.rule .if { font-weight: 600; }
+.rule .if em { font-style: normal; color: var(--accent); }
+.ex { font-size: 0.92rem; color: var(--muted); }
+.ex u { text-decoration: none; background: var(--mark); color: var(--mark-ink); padding: 0 3px; border-radius: 3px; }
+.tip { background: var(--accent-soft); border-radius: 10px; padding: 12px 14px; font-size: 0.92rem; }
+.tip strong { color: var(--accent); }
+.words { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 0.85rem; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; background: var(--bg); }
+.stack { display: flex; flex-direction: column; gap: 6px; }
+
+/* word family explorer */
+.fam-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+.fam-tabs button { flex: none; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 8px 14px; min-height: 40px; font-weight: 500; }
+.fam-tabs button[aria-pressed="true"] { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+.fam { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.fam td { padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.fam td:first-child { width: 64px; font-family: var(--font-display); font-size: 0.78rem; color: var(--muted); font-weight: 600; white-space: nowrap; padding-top: 11px; }
+.fam td:nth-child(2) { font-weight: 600; }
+.fam td:last-child { color: var(--muted); }
+.twins { display: flex; flex-direction: column; gap: 6px; font-size: 0.92rem; }
+.twins div { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.twins b { font-weight: 600; }
+
+/* quiz */
+.qhead { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.progress { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--accent); transition: width .25s; }
+.qcount { font-family: var(--font-display); font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 18px; display: flex; flex-direction: column; gap: 18px; }
+.qmeta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center; }
+.qno { font-family: var(--font-display); font-weight: 700; color: var(--muted); font-size: 0.85rem; letter-spacing: 0.04em; }
+.prompt { font-weight: 600; }
+.sentence { font-size: 1.12rem; line-height: 1.75; }
+.blank { display: inline-block; min-width: 4.5em; border-bottom: 2px solid var(--ink); text-align: center; padding: 0 4px; line-height: 1.3; }
+.blank.filled { background: var(--mark); color: var(--mark-ink); border-bottom-color: transparent; border-radius: 4px; font-weight: 600; }
+.choices { display: flex; flex-direction: column; gap: 8px; }
+.choice {
+  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+  background: var(--bg); border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 14px; min-height: 54px;
+  font-size: 1.02rem;
+}
+.bubble {
+  flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--muted);
+  display: grid; place-items: center; font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; color: var(--muted);
+}
+.choice.right { border-color: var(--ok); background: var(--ok-soft); }
+.choice.right .bubble { background: var(--ok); border-color: var(--ok); color: var(--surface); }
+.choice.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.choice.wrong .bubble { background: var(--bad); border-color: var(--bad); color: var(--surface); }
+.choice:disabled { cursor: default; }
+.choice.dim { opacity: 0.55; }
+.feedback { border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem; }
+.feedback.ok { background: var(--ok-soft); }
+.feedback.no { background: var(--bad-soft); }
+.feedback.info { background: var(--accent-soft); }
+.feedback .verdict { font-weight: 700; font-family: var(--font-display); }
+.feedback.ok .verdict { color: var(--ok); }
+.feedback.no .verdict { color: var(--bad); }
+.feedback.info .verdict { color: var(--accent); }
+.feedback .zh { color: var(--muted); font-size: 0.88rem; }
+.feedback b { font-weight: 600; }
+.tag { display: inline-block; font-size: 0.72rem; font-family: var(--font-display); font-weight: 600; letter-spacing: 0.04em; color: var(--accent); background: var(--accent-soft); border-radius: 6px; padding: 1px 8px; }
+
+/* tappable words (clue + error modes) */
+.tapline { font-size: 1.12rem; line-height: 2.1; }
+.tok { background: none; border: 0; padding: 2px 3px; margin: 0 -1px; border-radius: 6px; font-size: inherit; line-height: 1.4; }
+.tok:hover { background: var(--accent-soft); }
+.tok.hit { background: var(--mark); color: var(--mark-ink); font-weight: 600; }
+.tok.miss { background: var(--bad-soft); color: var(--bad); }
+.tok.fine { color: var(--muted); text-decoration: underline dotted; }
+.tok.badword { background: var(--bad-soft); color: var(--bad); text-decoration: line-through; font-weight: 600; }
+.tok:disabled { cursor: default; }
+.fixed { font-size: 1.02rem; }
+.fixed ins { text-decoration: none; background: var(--ok-soft); color: var(--ok); font-weight: 600; padding: 0 3px; border-radius: 4px; }
+
+/* sort mode */
+.bigword { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; text-align: center; padding: 18px 0 6px; overflow-wrap: anywhere; }
+.buckets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.bucket { min-height: 64px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
+.bucket b { font-family: var(--font-display); font-size: 1.1rem; }
+.bucket small { color: var(--muted); font-size: 0.8rem; }
+.bucket.right { border-color: var(--ok); background: var(--ok-soft); }
+.bucket.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.combo { font-family: var(--font-display); font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* flashcards */
+.flash {
+  width: 100%; min-height: 220px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px 18px; text-align: center;
+}
+.flash .front { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; }
+.flash .answer { font-size: 1.25rem; font-weight: 600; color: var(--accent); }
+.flash .exs { color: var(--muted); font-size: 0.95rem; }
+.flash .hint { font-size: 0.82rem; color: var(--muted); }
+
+/* decision steps */
+.path { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.path li { font-size: 0.9rem; display: flex; gap: 8px; align-items: baseline; }
+.path li .q { color: var(--muted); }
+.path li .a { font-weight: 600; color: var(--ok); white-space: nowrap; }
+.step { display: flex; flex-direction: column; gap: 10px; }
+.opts { display: flex; gap: 8px; flex-wrap: wrap; }
+.opts button { flex: 1 1 100px; min-height: 52px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); font-weight: 600; }
+.opts button.wrong { border-color: var(--bad); background: var(--bad-soft); }
+
+/* timer */
+.timer { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.timer i { display: block; height: 100%; background: var(--ok); width: 100%; }
+.timer.low i { background: var(--bad); }
+
+/* result */
+.score { font-family: var(--font-display); font-size: 3rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.score small { font-size: 1.2rem; color: var(--muted); font-weight: 500; }
+.misslist { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.misslist li { font-size: 0.92rem; border-left: 3px solid var(--bad); padding: 4px 0 4px 10px; }
+.misslist li b { color: var(--ok); }
+.cheat h3 { display: flex; gap: 8px; align-items: center; }
+.foot { font-size: 0.8rem; color: var(--muted); text-align: center; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head><body>
+
+<div class="wrap" id="app"></div>
+
+<script>
+/* =================== CONTENT =================== */
+const TOPICS = [
+{
+  id: "adjadv", name: "形容詞 vs 副詞", short: "形副", sub: "看空格修飾誰",
+  rules: [
+    ["空格修飾<em>名詞</em> → 形容詞", "a <u>careful</u> review"],
+    ["空格修飾<em>動詞、形容詞、副詞、整句</em> → 副詞", "review it <u>carefully</u> / <u>extremely</u> busy"],
+    ["空格在<em>連綴動詞</em>後（be, remain, seem, become, look, stay, appear）→ 形容詞", "Prices remained <u>stable</u>."],
+    ["空格夾在 <em>be / have + ___ + p.p.</em> 中間 → 副詞", "has been <u>significantly</u> improved"]
+  ],
+  tip: "<strong>陷阱：</strong>-ly 結尾不一定是副詞。friendly、timely、costly、likely、orderly 都是形容詞；hard / hardly、late / lately 意思完全不同（hardly = 幾乎不）。",
+  qs: [
+    { s: "The new software allows employees to process orders more ------- than before.", o: ["efficient","efficiently","efficiency","efficiencies"], a: 1,
+      why: "空格修飾動詞 <b>process</b>，要用副詞。more ___ than 只是比較級的外框，詞性還是看它修飾誰。", zh: "新軟體讓員工處理訂單比以前更有效率。" },
+    { s: "Sales figures have remained ------- despite the economic downturn.", o: ["stable","stably","stability","stabilize"], a: 0,
+      why: "<b>remain</b> 是連綴動詞，後面接形容詞描述主詞狀態。", zh: "儘管經濟衰退，銷售數字仍保持穩定。" },
+    { s: "The proposal was ------- reviewed by the finance committee.", o: ["thorough","thoroughly","thoroughness","more thorough"], a: 1,
+      why: "<b>was + ___ + reviewed</b>（be + p.p.）中間的位置一定填副詞。", zh: "這份提案經財務委員會徹底審查。" },
+    { s: "Please submit your expense reports in a ------- manner.", o: ["time","timely","timing","timelessly"], a: 1,
+      why: "空格修飾名詞 <b>manner</b>，要形容詞。<b>timely</b> 雖然是 -ly 結尾，卻是形容詞（及時的）。", zh: "請及時繳交您的費用報告。" },
+    { s: "The renovation project is ------- complete, with only minor painting left.", o: ["near","nearly","nearest","nearness"], a: 1,
+      why: "空格修飾形容詞 <b>complete</b>，要副詞。<b>nearly</b> = 幾乎；near 是「靠近」。", zh: "整修工程幾乎完成了，只剩少量油漆工作。" }
+  ]
+},
+{
+  id: "wordform", name: "詞性變化", short: "詞性", sub: "critic / criticism / critical…",
+  rules: [
+    ["第一步：看空格<em>位置</em>決定要哪個詞性", "冠詞/形容詞後 → 名詞；be 動詞後 → 形容詞"],
+    ["第二步：名詞要分<em>人</em>還是<em>事</em>", "a <u>critic</u>（評論家）vs strong <u>criticism</u>（批評）"],
+    ["第三步：同詞性有兩個時看<em>語意</em>", "<u>economic</u> growth（經濟的）vs an <u>economical</u> car（省錢的）"]
+  ],
+  tip: "<strong>字尾速查：</strong>名詞 -tion -ment -ness -ity -ance -ism -sis；人 -er -or -ist -ant -ee（critic 也是人）；形容詞 -ive -al -ous -able -ful -ic；動詞 -ize -ify -en -ate。多益用美式拼法 criticize，英式寫作 criticise。",
+  family: true,
+  qs: [
+    { s: "The film received strong ------- from several well-known reviewers.", o: ["critic","criticism","critical","criticize"], a: 1,
+      why: "形容詞 <b>strong</b> 後面要名詞。critic 是「評論家」，可數單數前面要有 a，語意也不對，所以選 <b>criticism</b>（批評）。", zh: "這部電影受到幾位知名影評人的強烈批評。" },
+    { s: "Ms. Park is a respected ------- who writes for the city's largest newspaper.", o: ["critic","criticism","critically","critical"], a: 0,
+      why: "<b>a respected ___ who</b>：關係代名詞 who 指人，所以要「人」的名詞 <b>critic</b>。", zh: "朴女士是一位受尊敬的評論家，替本市最大的報紙撰稿。" },
+    { s: "Meeting the deadline is ------- to the success of the project.", o: ["critic","criticize","critical","critically"], a: 2,
+      why: "be 動詞後接形容詞。<b>critical to</b> = 對…至關重要。", zh: "趕上截止期限對專案成功至關重要。" },
+    { s: "Our firm must lower its prices to remain ------- in the market.", o: ["compete","competition","competitive","competitively"], a: 2,
+      why: "<b>remain</b> 是連綴動詞，後面接形容詞 <b>competitive</b>（有競爭力的）。", zh: "我們公司必須降價才能在市場上保持競爭力。" },
+    { s: "Ms. Liu was named the ------- to the retiring CEO.", o: ["success","successor","successful","successive"], a: 1,
+      why: "<b>the ___ to</b> 要名詞，而且是「被任命」的人，所以是 <b>successor</b>（繼任者）。success 是事，不能被任命。", zh: "劉女士被任命為即將退休執行長的繼任者。" },
+    { s: "Buying supplies in bulk is more ------- for small businesses.", o: ["economy","economic","economical","economist"], a: 2,
+      why: "be 後接形容詞，有 economic 和 economical 兩個。這裡說「比較省錢」，用 <b>economical</b>；economic 是「經濟方面的」。", zh: "大量採購對小企業來說比較划算。" }
+  ]
+},
+{
+  id: "ving", name: "V-ing 還是原形", short: "V-ing", sub: "look forward to + ?",
+  rules: [
+    ["to 是<em>介系詞</em> → 接 V-ing 或名詞", "look forward to <u>seeing</u> you"],
+    ["to 是<em>不定詞</em> → 接原形動詞", "plan to <u>expand</u>"],
+    ["某些動詞後<em>固定接 V-ing</em>", "consider <u>hiring</u>"],
+    ["使役動詞 <em>make / let / have + 受詞</em> → 原形", "had the staff <u>update</u> the list"]
+  ],
+  tip: "<strong>判斷 to 的方法：</strong>把 to 後面換成 it。look forward to it 說得通，表示 to 是介系詞，要接 V-ing。plan to it 說不通，就是不定詞，接原形。",
+  words: [
+    ["to + V-ing（介系詞）", ["look forward to","be committed to","be dedicated to","be used to（習慣）","object to","contribute to","in addition to","prior to","when it comes to"]],
+    ["動詞 + V-ing", ["consider","avoid","suggest","recommend","finish","postpone","delay","mind","keep","enjoy"]],
+    ["動詞 + to V", ["decide","plan","agree","hope","intend","refuse","afford","fail","manage","aim","used to（過去常常）"]]
+  ],
+  qs: [
+    { s: "We look forward to ------- you at the annual conference.", o: ["see","seeing","be seen","have seen"], a: 1,
+      why: "<b>look forward to</b> 的 to 是介系詞，後面接 V-ing。", zh: "我們期待在年會上見到您。" },
+    { s: "The company is committed to ------- its carbon emissions by 2030.", o: ["reduce","reducing","reduced","reduction"], a: 1,
+      why: "<b>be committed to</b> 的 to 是介系詞。後面還有受詞 its carbon emissions，所以要動名詞 reducing，名詞 reduction 不能直接帶受詞。", zh: "公司承諾在 2030 年前減少碳排放。" },
+    { s: "Mr. Tanaka decided ------- the offer from the rival firm.", o: ["accepting","to accept","accept","accepted"], a: 1,
+      why: "<b>decide</b> 後面接 to V。", zh: "田中先生決定接受競爭公司的工作邀約。" },
+    { s: "The consultant recommended ------- the launch until the spring.", o: ["postpone","to postpone","postponing","postponed"], a: 2,
+      why: "<b>recommend</b> 後面接 V-ing（或 recommend that S + 原形），不接 to V。", zh: "顧問建議把上市延到春天。" },
+    { s: "The manager had the interns ------- the inventory list.", o: ["update","updating","to update","updates"], a: 0,
+      why: "使役動詞 <b>have + 人 + 原形</b>。", zh: "經理讓實習生更新庫存清單。" },
+    { s: "Employees who are used to ------- from home may find the new office policy difficult.", o: ["work","working","worked","be working"], a: 1,
+      why: "<b>be used to</b>（習慣於）的 to 是介系詞，接 V-ing。沒有 be 的 <b>used to + 原形</b> 才是「過去常常」。", zh: "習慣在家工作的員工可能會覺得新的辦公室政策很難適應。" }
+  ]
+},
+{
+  id: "relative", name: "關係詞", short: "關係詞", sub: "where / which / when / whose",
+  rules: [
+    ["後面子句<em>缺主詞或受詞</em> → which / who / that", "the hotel <u>which</u> we booked（book 缺受詞）"],
+    ["後面子句<em>完整</em> → where（地點）/ when（時間）/ why（原因）", "the hotel <u>where</u> we stayed（stay 不缺東西）"],
+    ["空格後<em>直接接名詞</em>表示所有 → whose", "applicants <u>whose</u> résumés are incomplete"],
+    ["前面<em>沒有先行詞</em> → what（= the thing that）", "<u>What</u> we need is more time."]
+  ],
+  tip: "<strong>兩個 that 禁區：</strong>逗號後面不能用 that（, which ✓）；介系詞後面不能用 that（in which ✓）。另外 where = in / at which。",
+  qs: [
+    { s: "The hotel ------- the conference will be held is located near the airport.", o: ["which","where","who","what"], a: 1,
+      why: "後面 <b>the conference will be held</b> 是完整句（被動語態不缺受詞），先行詞是地點，用 <b>where</b>。", zh: "舉辦會議的那間飯店位於機場附近。" },
+    { s: "The hotel ------- we booked for the conference has a large banquet hall.", o: ["where","which","when","whose"], a: 1,
+      why: "<b>we booked</b> 缺受詞（訂了什麼？），所以用 <b>which</b>。同樣是 hotel，後面子句完不完整才是重點。", zh: "我們為會議預訂的飯店有一間大宴會廳。" },
+    { s: "Please let us know the date ------- you plan to arrive.", o: ["which","where","when","whom"], a: 2,
+      why: "<b>you plan to arrive</b> 是完整句，先行詞 the date 是時間，用 <b>when</b>。", zh: "請告訴我們您預計抵達的日期。" },
+    { s: "Applicants ------- résumés are incomplete will not be considered.", o: ["who","whose","which","whom"], a: 1,
+      why: "空格後直接接名詞 <b>résumés</b>，表示「應徵者的履歷」，用所有格 <b>whose</b>。", zh: "履歷不完整的應徵者將不予考慮。" },
+    { s: "The museum, ------- was renovated last year, now attracts twice as many visitors.", o: ["that","where","which","what"], a: 2,
+      why: "後面缺主詞，要 which 或 that，但逗號後面不能用 that，所以是 <b>which</b>。", zh: "這間去年整修過的博物館，現在吸引了兩倍的遊客。" },
+    { s: "------- the client wants most is a faster delivery schedule.", o: ["That","Which","What","Whose"], a: 2,
+      why: "前面沒有先行詞，___ the client wants most 整段當主詞，用 <b>What</b>（= the thing that）。", zh: "客戶最想要的是更快的交貨時程。" }
+  ]
+},
+{
+  id: "prep", name: "特殊介系詞", short: "介系詞", sub: "Upon arriving, within, by…",
+  rules: [
+    ["<em>Upon / On + V-ing 或名詞</em> = 一…就…", "<u>Upon</u> arriving, …／<u>Upon</u> receipt of …"],
+    ["<em>by</em> = 在某時間之前（截止）；<em>until</em> = 一直持續到", "submit it <u>by</u> Friday／stay open <u>until</u> 9 P.M."],
+    ["<em>within</em> + 一段期間 = 在…之內", "<u>within</u> 30 days of purchase"],
+    ["介系詞接名詞，連接詞接子句", "<u>despite</u> the rain／<u>although</u> it rained"]
+  ],
+  tip: "<strong>成對記：</strong>despite / in spite of（介）vs although（連）；due to / because of（介）vs because（連）；during（介）vs while（連）；prior to = before。",
+  qs: [
+    { s: "------- arriving at the airport, passengers should proceed to the customs desk.", o: ["Upon","Despite","Within","Although"], a: 0,
+      why: "<b>Upon + V-ing</b> = 一抵達就…，是多益常考句首用法。", zh: "旅客一抵達機場，就應前往海關櫃檯。" },
+    { s: "All returns must be made ------- 30 days of purchase.", o: ["during","within","by","until"], a: 1,
+      why: "<b>within + 期間 + of</b> = 在…之後的多久之內。by 後面接時間點，不接一段期間。", zh: "所有退貨須在購買後 30 天內辦理。" },
+    { s: "The report must be submitted ------- Friday at 5 P.M.", o: ["until","by","within","during"], a: 1,
+      why: "繳交是一次性的動作，要在截止時間前完成，用 <b>by</b>。until 用在持續的動作（wait until, stay until）。", zh: "報告必須在週五下午五點前繳交。" },
+    { s: "------- the heavy rain, the outdoor event was held as planned.", o: ["Although","Despite","Because","Even"], a: 1,
+      why: "空格後是名詞片語 the heavy rain，要介系詞 <b>Despite</b>。Although 和 Because 是連接詞，後面要接子句。", zh: "儘管下大雨，戶外活動仍照計畫舉行。" },
+    { s: "Flight 207 was canceled ------- mechanical problems.", o: ["because","due to","although","so that"], a: 1,
+      why: "後面是名詞 mechanical problems，要介系詞片語 <b>due to</b>。because 後面要接子句。", zh: "207 號班機因機械問題取消。" },
+    { s: "------- receipt of your payment, we will ship your order.", o: ["Upon","Into","Among","Over"], a: 0,
+      why: "<b>Upon receipt of</b> = 一收到…就，商業書信固定用法。", zh: "一收到您的付款，我們就會出貨。" }
+  ]
+}
+];
+
+const FAMILIES = [
+  { root: "critic", rows: [["n. 人","critic","評論家"],["n. 事","criticism","批評"],["v.","criticize","批評（英式 criticise）"],["adj.","critical","批判的；關鍵的"],["adv.","critically","嚴重地；批判地"]] },
+  { root: "compete", rows: [["v.","compete","競爭"],["n. 事","competition","競爭；比賽"],["n. 人","competitor","競爭者"],["adj.","competitive","有競爭力的"],["adv.","competitively","有競爭力地"]] },
+  { root: "succeed", rows: [["v.","succeed","成功；繼任"],["n. 事","success","成功"],["n. 人","successor","繼任者"],["adj.","successful","成功的"],["adj.","successive","連續的"],["adv.","successfully","成功地"]] },
+  { root: "economy", rows: [["n.","economy","經濟"],["n. 人","economist","經濟學家"],["adj.","economic","經濟上的"],["adj.","economical","省錢的、划算的"],["adv.","economically","經濟上；節省地"]] },
+  { root: "analyze", rows: [["v.","analyze","分析"],["n. 事","analysis","分析（複數 analyses）"],["n. 人","analyst","分析師"],["adj.","analytical","分析的"],["adv.","analytically","分析地"]] },
+  { root: "rely", rows: [["v.","rely (on)","依賴"],["n.","reliance","依賴"],["n.","reliability","可靠性"],["adj.","reliable","可靠的"],["adv.","reliably","可靠地"]] }
+];
+const TWINS = [
+  ["economic 經濟的","economical 省錢的"],
+  ["successful 成功的","successive 連續的"],
+  ["considerable 相當多的","considerate 體貼的"],
+  ["respectful 有禮的","respective 各自的"],
+  ["comprehensive 全面的","comprehensible 可理解的"]
+];
+
+/* 線索偵探：先點出決定答案的字，再作答 */
+const CLUES = [
+  { s: "Sales figures have remained ------- despite the economic downturn.", clue: ["remained"], t: "adjadv",
+    says: "<b>remain</b> 是連綴動詞，後面要接<b>形容詞</b>。", o: ["stable","stably","stability","stabilize"], a: 0 },
+  { s: "The film received strong ------- from several reviewers.", clue: ["strong"], t: "wordform",
+    says: "形容詞 <b>strong</b> 後面要接<b>名詞</b>，而且是「批評」這件事。", o: ["critic","criticism","critical","criticize"], a: 1 },
+  { s: "The proposal was ------- reviewed by the committee.", clue: ["was","reviewed"], t: "adjadv",
+    says: "<b>was ___ reviewed</b> 是 be + p.p.，中間只能放<b>副詞</b>。", o: ["thorough","thoroughly","thoroughness","thoroughest"], a: 1 },
+  { s: "We look forward to ------- you at the conference.", clue: ["look","forward","to"], t: "ving",
+    says: "<b>look forward to</b> 的 to 是介系詞，要接 <b>V-ing</b>。", o: ["meet","meeting","be met","have met"], a: 1 },
+  { s: "The hotel ------- we booked has a large banquet hall.", clue: ["booked"], t: "relative",
+    says: "<b>booked</b> 後面沒有受詞，子句不完整，要用 <b>which / that</b>。", o: ["where","which","when","whose"], a: 1 },
+  { s: "Applicants ------- résumés are incomplete will not be considered.", clue: ["résumés"], t: "relative",
+    says: "空格後直接接名詞 <b>résumés</b>，表示「誰的履歷」，要用 <b>whose</b>。", o: ["who","whose","which","whom"], a: 1 },
+  { s: "------- the heavy rain, the event was held as planned.", clue: ["rain,","heavy","rain"], t: "prep",
+    says: "空格到逗號之間只有名詞片語 <b>the heavy rain</b>，沒有動詞，要用<b>介系詞</b>。", o: ["Although","Despite","Because","Even though"], a: 1 }
+];
+
+/* 改錯挑戰：每句有一個錯 */
+const ERRORS = [
+  { s: "The team worked efficient to finish the project ahead of schedule.", bad: ["efficient"], fix: "efficiently", t: "adjadv",
+    why: "修飾動詞 worked，要用副詞 <b>efficiently</b>。" },
+  { s: "We look forward to meet you next week.", bad: ["meet"], fix: "meeting", t: "ving",
+    why: "look forward to 的 to 是介系詞，要接 V-ing：<b>meeting</b>。" },
+  { s: "Please submit the form until Friday.", bad: ["until"], fix: "by", t: "prep",
+    why: "繳交是在截止前完成的一次性動作，用 <b>by</b>。until 用在持續的動作。" },
+  { s: "Ms. Kim is a well-known critical of modern art.", bad: ["critical"], fix: "critic", t: "wordform",
+    why: "a well-known ___ 要名詞，指「人」，用 <b>critic</b>（評論家）。critical 是形容詞。" },
+  { s: "The office which I work is near the station.", bad: ["which"], fix: "where", t: "relative",
+    why: "I work 是完整句（work 不需要受詞），先行詞是地點，用 <b>where</b>（或 in which）。" },
+  { s: "Despite it rained heavily, the event continued.", bad: ["despite"], fix: "Although", t: "prep",
+    why: "後面 it rained heavily 是子句，要連接詞 <b>Although</b>。Despite 只能接名詞或 V-ing。" },
+  { s: "The manager suggested to hold the meeting online.", bad: ["to","hold"], fix: "holding", t: "ving",
+    why: "suggest 後面接 V-ing，不接 to V：suggested <b>holding</b>。" },
+  { s: "Upon arrive at the hotel, please show your ID at the front desk.", bad: ["arrive"], fix: "arriving", t: "prep",
+    why: "Upon 是介系詞，後面接 V-ing：Upon <b>arriving</b>。" },
+  { s: "Our prices are very competition compared with other stores.", bad: ["competition"], fix: "competitive", t: "wordform",
+    why: "very 後面、be 動詞的補語要形容詞 <b>competitive</b>。" },
+  { s: "The new policy will take effect within March 1.", bad: ["within"], fix: "on", t: "prep",
+    why: "within 後面要接一段期間（within 30 days）。特定日期用 <b>on</b>。" }
+];
+
+/* 詞性分類：看字尾判斷 */
+const SORT = [
+  ["criticism","n","批評","-ism 名詞字尾"],
+  ["critic","n","評論家","-ic 結尾但這個字是「人」"],
+  ["criticize","v","批評","-ize 動詞字尾"],
+  ["critical","adj","關鍵的；批判的","-al 形容詞字尾"],
+  ["timely","adj","及時的","陷阱：-ly 結尾的形容詞"],
+  ["costly","adj","昂貴的","陷阱：名詞 + ly 變成形容詞"],
+  ["friendly","adj","友善的","陷阱：名詞 + ly 變成形容詞"],
+  ["approval","n","批准","陷阱：動詞 + -al 是名詞（approve → approval）"],
+  ["proposal","n","提案","陷阱：propose → proposal 是名詞"],
+  ["initiative","n","倡議；主動性","陷阱：-ive 結尾的名詞"],
+  ["analyst","n","分析師","-ist 是人"],
+  ["widen","v","加寬","-en 動詞字尾（wide → widen）"],
+  ["finalize","v","定案","-ize 動詞字尾"],
+  ["successive","adj","連續的","-ive 形容詞字尾"],
+  ["economically","adv","經濟上","形容詞 + ly 變副詞"],
+  ["reliance","n","依賴","-ance 名詞字尾"],
+  ["hardly","adv","幾乎不","注意意思：hardly ≠ 努力地"],
+  ["simplify","v","簡化","-ify 動詞字尾"]
+];
+const POS = { n: ["n.","名詞"], v: ["v.","動詞"], adj: ["adj.","形容詞"], adv: ["adv.","副詞"] };
+
+/* 搭配閃卡 */
+const CARDS = [
+  ["look forward to ___","+ V-ing","We look forward to working with you.","ving"],
+  ["be committed to ___","+ V-ing / N","We are committed to providing quality service.","ving"],
+  ["be used to ___","+ V-ing（習慣於）","She is used to working late.","ving"],
+  ["used to ___","+ 原形（過去常常）","He used to work in Osaka.","ving"],
+  ["consider ___","+ V-ing","We are considering hiring more staff.","ving"],
+  ["recommend ___","+ V-ing","I recommend booking early.","ving"],
+  ["avoid ___","+ V-ing","Avoid using the elevator during the drill.","ving"],
+  ["decide ___","+ to V","They decided to expand overseas.","ving"],
+  ["afford ___","+ to V","We cannot afford to delay the launch.","ving"],
+  ["have + 人 + ___","+ 原形","I'll have Tom send the file.","ving"],
+  ["Upon ___","+ V-ing / N（一…就…）","Upon receiving the invoice, please pay within 30 days.","prep"],
+  ["despite ___","+ N / V-ing（不接子句）","Despite the delay, the event started on time.","prep"],
+  ["within ___","+ 一段期間","Returns are accepted within 14 days.","prep"],
+  ["submit ___ Friday","by（截止前完成）","Submit the report by Friday.","prep"],
+  ["prior to ___","+ N / V-ing（= before）","Prior to joining us, she worked at a bank.","prep"]
+];
+
+/* 關係詞判斷流程 */
+const NODES = {
+  ante: { q: "空格前面有「先行詞」（被修飾的名詞）嗎？", opts: [["有","poss"],["沒有","=what"]] },
+  poss: { q: "空格後面直接接名詞，意思是「…的」？", opts: [["是","=whose"],["不是","full"]] },
+  full: { q: "空格後面的子句完整嗎？（不缺主詞、不缺受詞）", opts: [["完整","kind"],["缺東西","who"]] },
+  kind: { q: "先行詞是哪一種？", opts: [["地點","=where"],["時間","=when"],["原因","=why"]] },
+  who:  { q: "先行詞是人還是物？", opts: [["人","=who"],["物","=which"]] }
+};
+const TREE = [
+  { s: "The hotel ------- the conference will be held is located near the airport.", ans: "where",
+    hint: { ante: "先行詞是 the hotel。", poss: "空格後是 the conference will be held，不是「飯店的會議」。", full: "the conference will be held 主詞、動詞都有，被動語態也不缺受詞。", kind: "hotel 是地點。" } },
+  { s: "The hotel ------- we booked for the conference has a large banquet hall.", ans: "which",
+    hint: { ante: "先行詞是 the hotel。", poss: "空格後是代名詞 we，不是「飯店的…」。", full: "booked 訂了什麼？受詞不見了，子句不完整。", who: "hotel 是物。" } },
+  { s: "Please let us know the date ------- you plan to arrive.", ans: "when",
+    hint: { ante: "先行詞是 the date。", poss: "空格後是 you，不是「日期的…」。", full: "you plan to arrive 完整，arrive 不需要受詞。", kind: "date 是時間。" } },
+  { s: "Applicants ------- résumés are incomplete will not be considered.", ans: "whose",
+    hint: { ante: "先行詞是 Applicants。", poss: "空格後直接是名詞 résumés，意思是「應徵者的履歷」。" } },
+  { s: "------- the client wants most is a faster delivery schedule.", ans: "what",
+    hint: { ante: "空格在句首，前面沒有名詞可以修飾。" } },
+  { s: "Mr. Ito, ------- joined the firm in 2019, now leads the sales team.", ans: "who", comma: true,
+    hint: { ante: "先行詞是 Mr. Ito。", poss: "空格後是動詞 joined，不是名詞。", full: "joined the firm 少了主詞（誰加入？），不完整。", who: "Mr. Ito 是人。" } },
+  { s: "The museum, ------- was renovated last year, attracts many visitors.", ans: "which", comma: true,
+    hint: { ante: "先行詞是 The museum。", poss: "空格後是動詞 was，不是名詞。", full: "was renovated 少了主詞，不完整。", who: "museum 是物。" } }
+];
+
+/* =================== STORAGE =================== */
+const KEY = "toeic-p5-v1";
+let store = {};
+try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { store = {}; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+function today(d) { d = d || new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function markDay() {
+  const days = store._days || []; const t = today();
+  if (days[days.length - 1] !== t) { days.push(t); store._days = days.slice(-400); save(); }
+}
+function streak() {
+  const set = new Set(store._days || []); let n = 0; const d = new Date();
+  if (!set.has(today(d))) d.setDate(d.getDate() - 1);
+  while (set.has(today(d))) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
+function qid(t, i) { return t.id + ":" + i; }
+function record(id, ok) {
+  const r = store[id] || { n: 0, wrong: 0, last: null };
+  r.n++; if (!ok) r.wrong++; r.last = ok; store[id] = r; markDay(); save();
+}
+
+/* =================== HELPERS =================== */
+const app = document.getElementById("app");
+const L = ["A","B","C","D"];
+let cleanup = null;
+function screen(html) { if (cleanup) { cleanup(); cleanup = null; } app.innerHTML = html; window.scrollTo({ top: 0 }); }
+function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+function topicName(id) { const t = TOPICS.find(x => x.id === id); return t ? t.name : ""; }
+function sentenceHTML(s, fill) {
+  const parts = esc(s).split("-------");
+  const blank = fill ? `<span class="blank filled">${esc(fill)}</span>` : `<span class="blank" aria-label="空格">&nbsp;</span>`;
+  return parts.join(blank);
+}
+function norm(w) { return w.toLowerCase().replace(/[.,!?;:]/g, ""); }
+function tapHTML(s) {
+  return esc(s).split(" ").map((w, i) => w === "-------" ? `<span class="blank" aria-label="空格">&nbsp;</span>` : `<button class="tok" data-i="${i}">${w}</button>`).join(" ");
+}
+function topicStats(t) {
+  let ok = 0; t.qs.forEach((_, i) => { const r = store[qid(t, i)]; if (r && r.last) ok++; });
+  return { ok, total: t.qs.length };
+}
+function allQs() { return TOPICS.flatMap(t => t.qs.map((q, i) => ({ q, t, id: qid(t, i) }))); }
+function missed() { return allQs().filter(x => store[x.id] && store[x.id].last === false); }
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function head(label, i, n) {
+  return `<button class="back" id="back">‹ 回首頁</button>
+    <div class="qhead"><div class="progress"><i style="width:${i / n * 100}%"></i></div><span class="qcount">${i + 1} / ${n}</span></div>`;
+}
+function bindBack() { const b = app.querySelector("#back"); if (b) b.onclick = home; }
+function doneScreen(label, title, body, again) {
+  screen(`<header class="top"><span class="eyebrow">${label} · 結果</span><h2>${title}</h2></header>
+    <section class="panel">${body}</section>
+    <div class="actions">${again ? `<button class="btn grow" id="again">再玩一次</button>` : ""}<button class="btn ghost grow" id="home">回首頁</button></div>`);
+  if (again) app.querySelector("#again").onclick = again;
+  app.querySelector("#home").onclick = home;
+}
+
+/* =================== HOME =================== */
+const MODES = [
+  { id: "clue", name: "線索偵探", d: "先點出決定答案的那個字，再作答。練的是解題的眼睛。", for: ["全部單元"], run: () => clueMode() },
+  { id: "error", name: "改錯挑戰", d: "每句藏一個錯，點出來看正確寫法。", for: ["全部單元"], run: () => errorMode() },
+  { id: "sort", name: "詞性分類", d: "一個字跳出來，判斷 n. v. adj. adv.，專抓 -ly、-al、-ive 陷阱。", for: ["詞性","形副"], run: () => sortMode() },
+  { id: "cards", name: "搭配閃卡", d: "consider + ？翻卡記搭配，不熟的會再出現。", for: ["V-ing","介系詞"], run: () => cardMode() },
+  { id: "tree", name: "關係詞判斷流程", d: "照步驟問自己三個問題，選出 which / where / whose。", for: ["關係詞"], run: () => treeMode() },
+  { id: "speed", name: "20 秒限時", d: "正式考試 Part 5 每題約 20 秒。計時作答，練反應速度。", for: ["全部單元"], run: () => quiz(shuffle(allQs()).slice(0, 10), "20 秒限時", 20) },
+  { id: "cheat", name: "重點速查", d: "五個單元的規則一頁看完，考前快速複習。", for: ["全部單元"], run: () => cheat() }
+];
+function home() {
+  const all = allQs();
+  const tried = all.filter(x => store[x.id]).length;
+  const miss = missed().length;
+  const st = streak();
+  screen(`
+    <header class="top">
+      <span class="eyebrow">TOEIC Reading · Part 5</span>
+      <h1>多益 Part 5 特訓</h1>
+      <p class="muted">先從單元看重點、做題，再用不同的練習方式加強。答錯的題目會自動收進錯題本。</p>
+      <div class="stats">
+        <span class="stat">連續練習 <b>${st}</b> 天</span>
+        <span class="stat">已練 <b>${tried}</b> / ${all.length} 題</span>
+        <span class="stat">錯題本 <b>${miss}</b> 題</span>
+      </div>
+    </header>
+    <div class="section-title"><h3>單元練習</h3><span class="muted" style="font-size:.88rem">重點說明＋多益題型</span></div>
+    <div class="topics">
+      ${TOPICS.map((t, i) => { const s = topicStats(t); const p = Math.round(s.ok / s.total * 100); return `
+        <button class="topic" data-t="${i}">
+          <span class="num">${i + 1}</span>
+          <span class="t"><strong>${t.name}</strong><span>${esc(t.sub)}</span></span>
+          <span class="meter"><span>${s.ok}/${s.total}</span><i style="--p:${p}%"></i></span>
+        </button>`; }).join("")}
+    </div>
+    <div class="actions">
+      <button class="btn grow" id="mix">綜合練習 10 題</button>
+      <button class="btn ghost grow" id="review" ${miss ? "" : "disabled"}>練錯題本（${miss}）</button>
+    </div>
+    <div class="section-title"><h3>換個方式練</h3><span class="muted" style="font-size:.88rem">同樣的弱點，不同的練法</span></div>
+    <div class="modes">
+      ${MODES.map((m, i) => `<button class="mode" data-m="${i}"><strong>${m.name}</strong><span class="d">${m.d}</span><span class="for">${m.for.map(f => `<span class="tag">${f}</span>`).join("")}</span></button>`).join("")}
+    </div>
+    <p class="foot">進度只存在這台裝置的瀏覽器裡。</p>`);
+  app.querySelectorAll(".topic").forEach(b => b.onclick = () => lesson(TOPICS[+b.dataset.t]));
+  app.querySelectorAll(".mode").forEach(b => b.onclick = () => MODES[+b.dataset.m].run());
+  app.querySelector("#mix").onclick = () => quiz(shuffle(allQs()).slice(0, 10), "綜合練習");
+  app.querySelector("#review").onclick = () => quiz(shuffle(missed()), "錯題本");
+}
+
+/* =================== LESSON =================== */
+function rulesHTML(t) {
+  return `<ul class="rules">${t.rules.map(r => `<li class="rule"><span class="if">${r[0]}</span><span class="ex">${r[1]}</span></li>`).join("")}</ul><p class="tip">${t.tip}</p>`;
+}
+function wordsHTML(t) {
+  return t.words.map(w => `<div class="stack"><span class="eyebrow">${w[0]}</span><div class="words">${w[1].map(x => `<span class="chip">${x}</span>`).join("")}</div></div>`).join("");
+}
+function twinsHTML() { return `<div class="twins">${TWINS.map(p => `<div><b>${p[0]}</b><span class="muted">vs</span><b>${p[1]}</b></div>`).join("")}</div>`; }
+function lesson(t) {
+  const idx = TOPICS.indexOf(t) + 1;
+  screen(`
+    <button class="back" id="back">‹ 回首頁</button>
+    <header class="top"><span class="eyebrow">單元 ${idx}</span><h2>${t.name}</h2></header>
+    <section class="panel"><h3>看到這個線索，就選這個</h3>${rulesHTML(t)}</section>
+    ${t.words ? `<section class="panel"><h3>常考搭配</h3>${wordsHTML(t)}</section>` : ""}
+    ${t.family ? `<section class="panel">
+      <h3>字族表</h3>
+      <div class="fam-tabs" role="group" aria-label="選擇字根">${FAMILIES.map((f, i) => `<button data-f="${i}" aria-pressed="${i === 0}">${f.root}</button>`).join("")}</div>
+      <table class="fam" id="fam"></table>
+      <span class="eyebrow">長得像、意思不同</span>${twinsHTML()}
+    </section>` : ""}
+    <div class="actions"><button class="btn grow" id="go">開始練習（${t.qs.length} 題）</button></div>`);
+  bindBack();
+  app.querySelector("#go").onclick = () => quiz(t.qs.map((q, i) => ({ q, t, id: qid(t, i) })), t.name);
+  if (t.family) {
+    const tabs = app.querySelectorAll(".fam-tabs button");
+    const show = i => {
+      tabs.forEach(b => b.setAttribute("aria-pressed", b.dataset.f == i));
+      app.querySelector("#fam").innerHTML = FAMILIES[i].rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("");
+    };
+    tabs.forEach(b => b.onclick = () => show(+b.dataset.f));
+    show(0);
+  }
+}
+
+/* =================== QUIZ (optionally timed) =================== */
+function quiz(list, label, seconds) {
+  let i = 0, score = 0, used = 0; const wrong = [];
+  function render() {
+    const { q, t, id } = list[i];
+    screen(`
+      ${head(label, i, list.length)}
+      ${seconds ? `<div class="timer" id="timer"><i></i></div>` : ""}
+      <article class="qcard">
+        <div class="qmeta"><span class="qno">${label}</span>${label === t.name ? "" : `<span class="tag">${t.name}</span>`}</div>
+        <p class="sentence" id="sent">${sentenceHTML(q.s)}</p>
+        <div class="choices">
+          ${q.o.map((o, k) => `<button class="choice" data-k="${k}"><span class="bubble">${L[k]}</span><span>${esc(o)}</span></button>`).join("")}
+        </div>
+        <div id="fb"></div>
+      </article>
+      <div class="actions"><button class="btn grow" id="next" hidden>${i + 1 < list.length ? "下一題" : "看結果"}</button></div>`);
+    bindBack();
+    const btns = app.querySelectorAll(".choice");
+    const start = Date.now(); let timerId = null;
+    function answer(k) {
+      if (timerId) { clearInterval(timerId); timerId = null; }
+      used += Math.min((Date.now() - start) / 1000, seconds || 999);
+      const ok = k === q.a;
+      record(id, ok);
+      if (ok) score++; else wrong.push(list[i]);
+      btns.forEach(x => {
+        x.disabled = true;
+        const kk = +x.dataset.k;
+        if (kk === q.a) x.classList.add("right"); else if (kk === k) x.classList.add("wrong"); else x.classList.add("dim");
+      });
+      app.querySelector("#sent").innerHTML = sentenceHTML(q.s, q.o[q.a]);
+      const verdict = k === -1 ? "時間到，正解是 (" + L[q.a] + ") " + esc(q.o[q.a]) : ok ? "答對了" : "答錯了，正解是 (" + L[q.a] + ") " + esc(q.o[q.a]);
+      app.querySelector("#fb").innerHTML = `
+        <div class="feedback ${ok ? "ok" : "no"}" role="status">
+          <span class="verdict">${verdict}</span><p>${q.why}</p><p class="zh">${q.zh}</p>
+        </div>`;
+      const nx = app.querySelector("#next"); nx.hidden = false; nx.focus({ preventScroll: true });
+      app.querySelector("#fb").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+    btns.forEach(b => b.onclick = () => answer(+b.dataset.k));
+    if (seconds) {
+      const bar = app.querySelector("#timer"), fill = bar.querySelector("i");
+      timerId = setInterval(() => {
+        const left = seconds - (Date.now() - start) / 1000;
+        fill.style.width = Math.max(0, left / seconds * 100) + "%";
+        bar.classList.toggle("low", left < 5);
+        if (left <= 0) answer(-1);
+      }, 100);
+      cleanup = () => { if (timerId) clearInterval(timerId); };
+    }
+    app.querySelector("#next").onclick = () => { i++; i < list.length ? render() : result(); };
+  }
+  function result() {
+    const avg = (used / list.length).toFixed(1);
+    doneScreen(label, score === list.length ? "全對，很穩！" : "這回合完成",
+      `<div class="score">${score}<small> / ${list.length}</small></div>
+       ${seconds ? `<p class="muted">平均每題 ${avg} 秒。正式考試 Part 5 建議每題 20 秒內完成。</p>` : ""}
+       ${wrong.length ? `<h3>要再看一次的題目</h3><ul class="misslist">${wrong.map(w => `<li>${sentenceHTML(w.q.s, w.q.o[w.q.a])}<br><span class="muted">正解 <b>${esc(w.q.o[w.q.a])}</b> · ${w.t.name}</span></li>`).join("")}</ul>` : `<p class="muted">這組題目都答對了。</p>`}`,
+      wrong.length ? () => quiz(shuffle(wrong), label.replace("（重做）", "") + "（重做）", seconds) : null);
+    if (wrong.length) app.querySelector("#again").textContent = "重做答錯的 " + wrong.length + " 題";
+  }
+  render();
+}
+
+/* =================== CLUE DETECTIVE =================== */
+function clueMode() {
+  const list = shuffle(CLUES); let i = 0, firstTry = 0;
+  function render() {
+    const it = list[i]; let misses = 0;
+    screen(`
+      ${head("線索偵探", i, list.length)}
+      <article class="qcard">
+        <div class="qmeta"><span class="qno">線索偵探</span><span class="tag">${topicName(it.t)}</span></div>
+        <p class="prompt" id="prompt">第一步：點出「決定答案」的那個字</p>
+        <p class="tapline" id="line">${tapHTML(it.s)}</p>
+        <div id="fb"></div>
+        <div class="choices" id="choices" hidden>
+          ${it.o.map((o, k) => `<button class="choice" data-k="${k}"><span class="bubble">${L[k]}</span><span>${esc(o)}</span></button>`).join("")}
+        </div>
+        <div id="fb2"></div>
+      </article>
+      <div class="actions"><button class="btn grow" id="next" hidden>${i + 1 < list.length ? "下一題" : "看結果"}</button></div>`);
+    bindBack();
+    const toks = app.querySelectorAll(".tok");
+    const isClue = w => it.clue.map(norm).includes(norm(w));
+    toks.forEach(b => b.onclick = () => {
+      if (isClue(b.textContent)) {
+        toks.forEach(x => { x.disabled = true; x.classList.remove("miss"); if (isClue(x.textContent)) x.classList.add("hit"); });
+        if (misses === 0) firstTry++;
+        app.querySelector("#prompt").textContent = "第二步：根據線索選答案";
+        app.querySelector("#fb").innerHTML = `<div class="feedback info"><span class="verdict">找到線索了</span><p>${it.says}</p></div>`;
+        app.querySelector("#choices").hidden = false;
+      } else {
+        misses++;
+        b.classList.add("miss");
+        app.querySelector("#fb").innerHTML = `<div class="feedback no"><span class="verdict">不是這個字</span><p>想想看：空格跟哪個字有文法上的關係？通常就在空格前後。</p></div>`;
+        if (misses >= 2) {
+          toks.forEach(x => { if (isClue(x.textContent)) x.classList.add("hit"); });
+          app.querySelector("#fb").innerHTML += `<p class="muted" style="font-size:.88rem;margin-top:6px">提示已標出，點它繼續。</p>`;
+        }
+      }
+    });
+    const btns = app.querySelectorAll(".choice");
+    btns.forEach(b => b.onclick = () => {
+      const k = +b.dataset.k, ok = k === it.a; markDay();
+      btns.forEach(x => { x.disabled = true; const kk = +x.dataset.k; if (kk === it.a) x.classList.add("right"); else if (kk === k) x.classList.add("wrong"); else x.classList.add("dim"); });
+      app.querySelector("#line").innerHTML = sentenceHTML(it.s, it.o[it.a]);
+      app.querySelector("#fb2").innerHTML = `<div class="feedback ${ok ? "ok" : "no"}"><span class="verdict">${ok ? "答對了" : "正解是 (" + L[it.a] + ") " + esc(it.o[it.a])}</span></div>`;
+      const nx = app.querySelector("#next"); nx.hidden = false;
+      app.querySelector("#fb2").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    app.querySelector("#next").onclick = () => { i++; i < list.length ? render() : doneScreen("線索偵探", "偵探任務完成",
+      `<div class="score">${firstTry}<small> / ${list.length}</small></div><p class="muted">一次就找到線索的題數。考試時先找線索再看選項，速度會快很多。</p>`, clueMode); };
+  }
+  render();
+}
+
+/* =================== ERROR HUNT =================== */
+function errorMode() {
+  const list = shuffle(ERRORS).slice(0, 8); let i = 0, found = 0;
+  function render() {
+    const it = list[i]; let misses = 0;
+    screen(`
+      ${head("改錯挑戰", i, list.length)}
+      <article class="qcard">
+        <div class="qmeta"><span class="qno">改錯挑戰</span><span class="tag">${topicName(it.t)}</span></div>
+        <p class="prompt">這句有一個地方錯了，點出來</p>
+        <p class="tapline">${tapHTML(it.s)}</p>
+        <div id="fb"></div>
+      </article>
+      <div class="actions"><button class="btn grow" id="next" hidden>${i + 1 < list.length ? "下一題" : "看結果"}</button></div>`);
+    bindBack();
+    const toks = app.querySelectorAll(".tok");
+    const isBad = w => it.bad.includes(norm(w));
+    function reveal(ok) {
+      markDay();
+      toks.forEach(x => { x.disabled = true; x.classList.remove("fine"); if (isBad(x.textContent)) x.classList.add("badword"); });
+      const words = it.s.split(" "); let done = false;
+      const fixed = words.map(w => {
+        if (it.bad.includes(norm(w))) { if (done) return null; done = true; const tail = /[.,]$/.test(w) ? w.slice(-1) : ""; return `<ins>${esc(it.fix)}</ins>${tail}`; }
+        return esc(w);
+      }).filter(x => x !== null).join(" ");
+      app.querySelector("#fb").innerHTML = `<div class="feedback ${ok ? "ok" : "no"}" role="status">
+        <span class="verdict">${ok ? "抓到了" : "錯在這裡"}</span>
+        <p class="fixed">${fixed}</p><p>${it.why}</p></div>`;
+      app.querySelector("#next").hidden = false;
+    }
+    toks.forEach(b => b.onclick = () => {
+      if (isBad(b.textContent)) { if (misses === 0) found++; reveal(true); }
+      else {
+        misses++; b.classList.add("fine"); b.disabled = true;
+        if (misses >= 2) reveal(false);
+        else app.querySelector("#fb").innerHTML = `<div class="feedback no"><span class="verdict">這個字沒問題</span><p>再找一次，還有一次機會。</p></div>`;
+      }
+    });
+    app.querySelector("#next").onclick = () => { i++; i < list.length ? render() : doneScreen("改錯挑戰", "挑戰完成",
+      `<div class="score">${found}<small> / ${list.length}</small></div><p class="muted">第一次就點中錯誤的題數。</p>`, errorMode); };
+  }
+  render();
+}
+
+/* =================== WORD SORT =================== */
+function sortMode() {
+  const list = shuffle(SORT).slice(0, 12); let i = 0, score = 0, combo = 0, best = 0; const miss = [];
+  function render() {
+    const [w, p, zh, note] = list[i];
+    screen(`
+      ${head("詞性分類", i, list.length)}
+      <article class="qcard">
+        <div class="qmeta"><span class="qno">這個字是什麼詞性？</span><span class="combo">連對 ${combo}</span></div>
+        <div class="bigword">${w}</div>
+        <div class="buckets">${Object.keys(POS).map(k => `<button class="bucket" data-p="${k}"><b>${POS[k][0]}</b><small>${POS[k][1]}</small></button>`).join("")}</div>
+        <div id="fb"></div>
+      </article>
+      <div class="actions"><button class="btn grow" id="next" hidden>${i + 1 < list.length ? "下一個" : "看結果"}</button></div>`);
+    bindBack();
+    const bs = app.querySelectorAll(".bucket");
+    bs.forEach(b => b.onclick = () => {
+      const ok = b.dataset.p === p; markDay();
+      if (ok) { score++; combo++; best = Math.max(best, combo); } else { combo = 0; miss.push(list[i]); }
+      bs.forEach(x => { x.disabled = true; if (x.dataset.p === p) x.classList.add("right"); else if (x === b) x.classList.add("wrong"); });
+      app.querySelector("#fb").innerHTML = `<div class="feedback ${ok ? "ok" : "no"}"><span class="verdict">${ok ? "答對了" : "是" + POS[p][1]}</span><p><b>${w}</b>（${POS[p][0]}）${zh}</p><p class="zh">${note}</p></div>`;
+      app.querySelector("#next").hidden = false;
+    });
+    app.querySelector("#next").onclick = () => { i++; i < list.length ? render() : doneScreen("詞性分類", "分類完成",
+      `<div class="score">${score}<small> / ${list.length}</small></div><p class="muted">最高連對 ${best} 個。</p>
+       ${miss.length ? `<h3>要記住的字</h3><ul class="misslist">${miss.map(m => `<li><b>${m[0]}</b> ${POS[m[1]][0]} ${m[2]}<br><span class="muted">${m[3]}</span></li>`).join("")}</ul>` : ""}`, sortMode); };
+  }
+  render();
+}
+
+/* =================== FLASHCARDS =================== */
+function cardMode() {
+  let queue = shuffle(CARDS); const total = queue.length; let known = 0, again = 0;
+  function render() {
+    const c = queue[0]; let flipped = false;
+    screen(`
+      ${head("搭配閃卡", known, total)}
+      <button class="flash" id="card" aria-live="polite">
+        <span class="tag">${topicName(c[3])}</span>
+        <span class="front">${esc(c[0])}</span>
+        <span class="hint" id="hint">先在心裡想答案，再點卡片翻面</span>
+        <span class="answer" id="ans" hidden>${esc(c[1])}</span>
+        <span class="exs" id="exs" hidden>${esc(c[2])}</span>
+      </button>
+      <div class="actions" id="rate" hidden>
+        <button class="btn ghost grow" id="no">還不熟</button>
+        <button class="btn grow" id="yes">記住了</button>
+      </div>
+      <p class="foot">剩 ${queue.length} 張。點「還不熟」的卡片會排到後面再出現。</p>`);
+    bindBack();
+    app.querySelector("#card").onclick = () => {
+      if (flipped) return; flipped = true;
+      app.querySelector("#ans").hidden = false; app.querySelector("#exs").hidden = false; app.querySelector("#hint").hidden = true;
+      app.querySelector("#rate").hidden = false;
+    };
+    app.querySelector("#yes").onclick = () => { markDay(); queue.shift(); known++; queue.length ? render() : finish(); };
+    app.querySelector("#no").onclick = () => { markDay(); again++; const x = queue.shift(); queue.splice(Math.min(3, queue.length), 0, x); render(); };
+  }
+  function finish() {
+    doneScreen("搭配閃卡", "整疊卡片都記住了", `<div class="score">${total}<small> 張</small></div><p class="muted">過程中點了 ${again} 次「還不熟」。</p>`, cardMode);
+  }
+  render();
+}
+
+/* =================== RELATIVE DECISION TREE =================== */
+function treeMode() {
+  const list = shuffle(TREE); let i = 0, clean = 0;
+  function render() {
+    const it = list[i]; let node = "ante"; let slips = 0; const path = [];
+    screen(`
+      ${head("關係詞判斷流程", i, list.length)}
+      <article class="qcard">
+        <div class="qmeta"><span class="qno">關係詞判斷流程</span><span class="tag">關係詞</span></div>
+        <p class="sentence" id="sent">${sentenceHTML(it.s)}</p>
+        <ul class="path" id="path"></ul>
+        <div class="step" id="step"></div>
+        <div id="fb"></div>
+      </article>
+      <div class="actions"><button class="btn grow" id="next" hidden>${i + 1 < list.length ? "下一句" : "看結果"}</button></div>`);
+    bindBack();
+    function correctNext(n) {
+      // walk from node n to find which option leads toward it.ans
+      const reach = (target, from) => {
+        if (from[0] === "=") return from.slice(1) === target;
+        return NODES[from].opts.some(o => reach(target, o[1]));
+      };
+      return NODES[n].opts.findIndex(o => reach(it.ans, o[1]));
+    }
+    function draw() {
+      app.querySelector("#path").innerHTML = path.map(p => `<li><span class="a">✓ ${p[1]}</span><span class="q">${p[0]}</span></li>`).join("");
+      const nd = NODES[node];
+      app.querySelector("#step").innerHTML = `<p class="prompt">${nd.q}</p><div class="opts">${nd.opts.map((o, k) => `<button data-k="${k}">${o[0]}</button>`).join("")}</div>`;
+      app.querySelectorAll(".opts button").forEach(b => b.onclick = () => {
+        const k = +b.dataset.k, good = correctNext(node);
+        if (k !== good) {
+          slips++; b.classList.add("wrong");
+          app.querySelector("#fb").innerHTML = `<div class="feedback no"><span class="verdict">再看一次句子</span><p>${it.hint[node] || ""}</p></div>`;
+          return;
+        }
+        markDay();
+        app.querySelector("#fb").innerHTML = "";
+        path.push([nd.q, nd.opts[k][0]]);
+        const to = nd.opts[k][1];
+        if (to[0] === "=") finish(); else { node = to; draw(); }
+      });
+    }
+    function finish() {
+      if (slips === 0) clean++;
+      app.querySelector("#path").innerHTML = path.map(p => `<li><span class="a">✓ ${p[1]}</span><span class="q">${p[0]}</span></li>`).join("");
+      app.querySelector("#step").innerHTML = "";
+      const fill = it.ans === "what" ? "What" : it.ans;
+      app.querySelector("#sent").innerHTML = sentenceHTML(it.s, fill);
+      const extra = (it.ans === "who" || it.ans === "which") ? (it.comma ? "前面有逗號，所以不能用 that。" : "這裡也可以用 that。") : "";
+      app.querySelector("#fb").innerHTML = `<div class="feedback ok"><span class="verdict">答案：${fill}</span><p>${Object.values(it.hint).join(" ")} ${extra}</p></div>`;
+      app.querySelector("#next").hidden = false;
+    }
+    draw();
+    app.querySelector("#next").onclick = () => { i++; i < list.length ? render() : doneScreen("關係詞判斷流程", "流程走完了",
+      `<div class="score">${clean}<small> / ${list.length}</small></div><p class="muted">每一步都判斷正確的句子數。熟了之後，這三個問題會在腦中幾秒內跑完。</p>`, treeMode); };
+  }
+  render();
+}
+
+/* =================== CHEAT SHEET =================== */
+function cheat() {
+  screen(`
+    <button class="back" id="back">‹ 回首頁</button>
+    <header class="top"><span class="eyebrow">考前複習</span><h2>重點速查</h2></header>
+    ${TOPICS.map((t, i) => `<section class="panel cheat"><h3><span class="tag">${i + 1}</span>${t.name}</h3>${rulesHTML(t)}${t.words ? wordsHTML(t) : ""}${t.family ? `<span class="eyebrow">長得像、意思不同</span>${twinsHTML()}` : ""}</section>`).join("")}`);
+  bindBack();
+}
+
+home();
+</script>
+</body></html>
