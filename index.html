@@ -233,6 +233,48 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outlin
 .misslist li { font-size: 0.92rem; border-left: 3px solid var(--bad); padding: 4px 0 4px 10px; }
 .misslist li b { color: var(--ok); }
 .cheat h3 { display: flex; gap: 8px; align-items: center; }
+
+/* mock exam */
+.mockcta {
+  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; border: 0;
+  background: var(--accent); color: var(--surface); border-radius: var(--radius); padding: 16px 18px;
+}
+.mockcta:active { transform: scale(0.99); }
+.mockcta .t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.mockcta strong { font-family: var(--font-display); font-size: 1.15rem; }
+.mockcta .t span { font-size: 0.88rem; opacity: 0.85; }
+.mockcta .go { font-family: var(--font-display); font-size: 1.8rem; line-height: 1; }
+.mockbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: -10px; }
+.clock { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.clock.low { color: var(--bad); }
+.choice.picked { border-color: var(--accent); background: var(--accent-soft); }
+.choice.picked .bubble { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.sheethead { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.sheetgrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+@media (min-width: 520px) { .sheetgrid { grid-template-columns: repeat(10, 1fr); } }
+.sheetgrid button {
+  min-height: 44px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg);
+  font-family: var(--font-display); font-weight: 600; font-variant-numeric: tabular-nums; color: var(--muted);
+}
+.sheetgrid button.filled { background: var(--accent-soft); border-color: var(--accent-soft); color: var(--accent); }
+.sheetgrid button.cur { border-color: var(--accent); color: var(--ink); }
+.hist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.hist li { display: grid; grid-template-columns: 4em 1fr auto; gap: 10px; font-variant-numeric: tabular-nums; }
+.breakdown { display: flex; flex-direction: column; gap: 8px; }
+.brow { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 0.95rem; }
+.brow .meter { width: 96px; }
+.seg { display: flex; border: 1.5px solid var(--accent); border-radius: 10px; overflow: hidden; }
+.seg button { border: 0; background: none; padding: 6px 12px; min-height: 38px; font-size: 0.88rem; font-weight: 600; color: var(--accent); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--surface); }
+.revlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.rev { border-left: 3px solid var(--bad); padding-left: 10px; }
+.rev.ok { border-left-color: var(--ok); }
+.rev summary { cursor: pointer; line-height: 1.7; }
+.rev .qno { margin-right: 2px; }
+.revbody { display: flex; flex-direction: column; gap: 6px; padding: 8px 0 4px; font-size: 0.93rem; }
+.revbody .good { color: var(--ok); font-weight: 600; }
+.revbody .bad { color: var(--bad); font-weight: 600; }
+.revbody b { font-weight: 600; }
 .foot { font-size: 0.8rem; color: var(--muted); text-align: center; }
 /* login gate */
 .gate { min-height: 75vh; display: flex; align-items: center; justify-content: center; }
@@ -316,9 +358,10 @@ const TOPICS = [
   ],
   tip: "<strong>判斷 to 的方法：</strong>把 to 後面換成 it。look forward to it 說得通，表示 to 是介系詞，要接 V-ing。plan to it 說不通，就是不定詞，接原形。",
   words: [
-    ["to + V-ing（介系詞）", ["look forward to","be committed to","be dedicated to","be used to（習慣）","object to","contribute to","in addition to","prior to","when it comes to"]],
-    ["動詞 + V-ing", ["consider","avoid","suggest","recommend","finish","postpone","delay","mind","keep","enjoy"]],
-    ["動詞 + to V", ["decide","plan","agree","hope","intend","refuse","afford","fail","manage","aim","used to（過去常常）"]]
+    ["to + V-ing（介系詞）", ["look forward to","be committed to","be dedicated to","be used to（習慣）","be accustomed to","object to","contribute to","in addition to","prior to","when it comes to"]],
+    ["動詞 + V-ing", ["consider","avoid","suggest","recommend","finish","postpone","delay","mind","keep","enjoy","have difficulty","spend time"]],
+    ["動詞 + to V", ["decide","plan","agree","hope","intend","refuse","afford","fail","manage","aim","be expected to","used to（過去常常）"]],
+    ["後面接原形", ["make / let / have + 人","help + 人 + (to)","would rather","had better","助動詞 will / can / should"]]
   ],
   qs: [
     { s: "We look forward to ------- you at the annual conference.", o: ["see","seeing","be seen","have seen"], a: 1,
@@ -384,6 +427,221 @@ const TOPICS = [
   ]
 }
 ];
+
+/* ===== 考前加量題庫：接在各單元原題後面，題號延續，舊進度不受影響 ===== */
+const MORE = {
+adjadv: [
+  { s: "The marketing team worked ------- to finish the campaign before the product launch.", o: ["hardly","hard","harder","hardness"], a: 1,
+    why: "空格修飾動詞 <b>worked</b>，要副詞。<b>hard</b> 本身就是副詞（努力地）；<b>hardly</b> 是「幾乎不」，意思相反。", zh: "行銷團隊在產品上市前努力完成宣傳活動。" },
+  { s: "Ms. Chen has been ------- busy since she took over the Tokyo account.", o: ["extreme","extremes","extremely","extremity"], a: 2,
+    why: "空格修飾形容詞 <b>busy</b>，要副詞 <b>extremely</b>。", zh: "陳女士接手東京的客戶後就非常忙碌。" },
+  { s: "The hotel staff were very ------- and answered all of our questions.", o: ["friendly","friend","friendliness","befriend"], a: 0,
+    why: "<b>were very ___</b> 是 be 動詞後接形容詞。<b>friendly</b> 雖然是 -ly 結尾，卻是形容詞。", zh: "飯店員工非常友善，回答了我們所有的問題。" },
+  { s: "Customer complaints have decreased ------- since the new return policy was introduced.", o: ["significant","significance","signify","significantly"], a: 3,
+    why: "<b>decrease</b> 在這裡是不及物動詞，空格修飾它，要副詞 <b>significantly</b>。", zh: "新的退貨政策實施後，客訴明顯減少。" },
+  { s: "The conference room is too small to ------- accommodate all forty participants.", o: ["comfortably","comfortable","comfort","comforting"], a: 0,
+    why: "<b>to ___ accommodate</b>：夾在 to 和動詞中間，修飾動詞 accommodate，要副詞。", zh: "會議室太小，無法舒適地容納全部四十位參加者。" },
+  { s: "Mr. Ortiz's presentation was ------- organized and easy to follow.", o: ["clear","clarity","clearly","clearer"], a: 2,
+    why: "<b>was + ___ + organized</b>（be + p.p.）中間填副詞。", zh: "歐提茲先生的簡報條理清楚、容易理解。" },
+  { s: "The delays in the supply chain proved ------- for the manufacturer.", o: ["costs","costly","costing","cost"], a: 1,
+    why: "<b>prove</b> 當「結果是」時是連綴動詞，後接形容詞。<b>costly</b>（昂貴的、代價高的）是 -ly 結尾的形容詞。", zh: "供應鏈延誤最後讓這家製造商付出高昂代價。" },
+  { s: "The new printer works ------- with all major operating systems.", o: ["seamless","seam","seamlessness","seamlessly"], a: 3,
+    why: "空格修飾動詞 <b>works</b>，要副詞 <b>seamlessly</b>（順暢地）。", zh: "新印表機能與所有主要作業系統順暢搭配使用。" },
+  { s: "Ms. Rivera has not visited the Boston office -------.", o: ["late","lately","latest","lateness"], a: 1,
+    why: "<b>lately</b> = 最近，常和現在完成式連用。<b>late</b> 當副詞是「遲到、晚」，意思不同。", zh: "里維拉女士最近沒去波士頓辦公室。" },
+  { s: "All visitors must remain ------- while the safety demonstration is in progress.", o: ["quietly","quietness","quiet","quieten"], a: 2,
+    why: "<b>remain</b> 是連綴動詞，後面接形容詞描述主詞狀態。", zh: "安全示範進行時，所有訪客必須保持安靜。" },
+  { s: "The survey results were ------- different from what the analysts had predicted.", o: ["surprise","surprising","surprised","surprisingly"], a: 3,
+    why: "空格修飾形容詞 <b>different</b>，要副詞 <b>surprisingly</b>。", zh: "調查結果和分析師的預測出乎意料地不同。" },
+  { s: "Our representatives respond to inquiries ------- and courteously.", o: ["promptly","prompt","promptness","prompted"], a: 0,
+    why: "<b>and</b> 連接對等的詞，另一邊是副詞 courteously，所以空格也是副詞 <b>promptly</b>，一起修飾 respond。", zh: "我們的客服人員迅速且有禮地回覆詢問。" },
+  { s: "The museum offers a ------- guided tour of its collection every Saturday morning.", o: ["freely","free","freedom","freeing"], a: 1,
+    why: "<b>a ___ guided tour</b>：空格修飾名詞 tour，要形容詞 <b>free</b>（免費的）。", zh: "博物館每週六上午提供免費的館藏導覽。" },
+  { s: "Ms. Lee is ------- the most qualified candidate for the position.", o: ["arguable","argue","arguably","argument"], a: 2,
+    why: "空格修飾後面整個名詞片語 the most qualified candidate（表示說話者的判斷），要副詞 <b>arguably</b>（可說是）。", zh: "李女士可說是這個職位最合格的人選。" },
+  { s: "It is ------- that the shipment will arrive two days late.", o: ["likely","like","likeness","liking"], a: 0,
+    why: "<b>It is ___ that…</b>：be 後面接形容詞。<b>likely</b>（可能的）是 -ly 結尾的形容詞。", zh: "這批貨很可能會晚兩天到。" },
+  { s: "The company's profits rose ------- in the third quarter.", o: ["sharp","sharpen","sharpness","sharply"], a: 3,
+    why: "<b>rise</b> 是不及物動詞，空格修飾它，要副詞 <b>sharply</b>（急遽地）。", zh: "公司第三季獲利大幅上升。" },
+  { s: "Ms. Kim found the training session extremely -------.", o: ["use","useful","usefully","usefulness"], a: 1,
+    why: "<b>find + 受詞 + 形容詞</b>：形容詞描述受詞 the training session。extremely 是副詞，修飾後面的形容詞。", zh: "金女士覺得這次訓練非常有用。" },
+  { s: "The instructions for assembling the shelf are ------- written.", o: ["poor","poorer","poorly","poorness"], a: 2,
+    why: "<b>are + ___ + written</b>（be + p.p.）中間填副詞 <b>poorly</b>。", zh: "這個層架的組裝說明寫得很差。" },
+  { s: "Although the new model is ------- more expensive, it uses much less energy.", o: ["slightly","slight","slighted","slightest"], a: 0,
+    why: "空格修飾比較級 <b>more expensive</b>，要副詞 <b>slightly</b>（稍微）。", zh: "雖然新機型稍微貴一點，但耗電量少很多。" },
+  { s: "The board ------- approved the budget after a brief discussion.", o: ["unanimous","unanimity","unanimousness","unanimously"], a: 3,
+    why: "空格放在主詞和動詞 <b>approved</b> 中間，修飾動詞，要副詞。", zh: "董事會在簡短討論後一致通過了預算。" }
+],
+wordform: [
+  { s: "The ------- of the new factory will create more than 300 jobs.", o: ["construct","construction","constructive","constructively"], a: 1,
+    why: "<b>The ___ of</b>：冠詞後、of 前，要名詞 <b>construction</b>。", zh: "新工廠的興建將創造超過三百個工作機會。" },
+  { s: "Mr. Dawson gave a ------- presentation on the company's sustainability goals.", o: ["persuade","persuasion","persuasively","persuasive"], a: 3,
+    why: "<b>a ___ presentation</b>：修飾名詞要形容詞，-ive 是形容詞字尾。", zh: "道森先生針對公司的永續目標做了一場有說服力的簡報。" },
+  { s: "All ------- must register at the front desk before entering the building.", o: ["visit","visitors","visiting","visited"], a: 1,
+    why: "<b>All ___ must register</b>：主詞是「會去登記的人」，要人的名詞複數 <b>visitors</b>。", zh: "所有訪客進入大樓前必須在櫃檯登記。" },
+  { s: "The new policy is intended to ------- the hiring process.", o: ["simple","simplicity","simply","simplify"], a: 3,
+    why: "<b>to ___ the hiring process</b>：to 後面有受詞，要動詞 <b>simplify</b>。-ify 是動詞字尾。", zh: "新政策是為了簡化招募流程。" },
+  { s: "Please review the contract for ------- before signing it.", o: ["accurate","accuracy","accurately","inaccurate"], a: 1,
+    why: "介系詞 <b>for</b> 後面要名詞，<b>accuracy</b>（正確性）。-cy 也是名詞字尾。", zh: "簽約前請確認合約內容是否正確。" },
+  { s: "Ms. Gomez is ------- for coordinating all travel arrangements.", o: ["responsibility","response","responsible","responsibly"], a: 2,
+    why: "be 後面接形容詞，<b>be responsible for</b> = 負責…。", zh: "戈麥斯女士負責協調所有差旅安排。" },
+  { s: "The ------- for the marketing manager position must have five years of experience.", o: ["apply","application","applicable","applicant"], a: 3,
+    why: "主詞要「有經驗」，一定是人，所以選 <b>applicant</b>（應徵者）。application 是申請（事），不會有經驗。", zh: "應徵行銷經理職位者須有五年經驗。" },
+  { s: "Our ------- with the supplier has lasted more than ten years.", o: ["relate","relative","relationship","relatively"], a: 2,
+    why: "所有格 <b>Our</b> 後面要名詞。relative 是名詞時指「親戚」，語意不通；要選 <b>relationship</b>（關係）。", zh: "我們和這家供應商的合作關係已超過十年。" },
+  { s: "The committee will ------- the proposals and select a winner next month.", o: ["evaluate","evaluation","evaluative","evaluator"], a: 0,
+    why: "助動詞 <b>will</b> 後面接原形動詞，和後面的 select 並列。-ate 是動詞字尾。", zh: "委員會將評估提案，並在下個月選出優勝者。" },
+  { s: "Mr. Hassan's ------- to detail makes him an excellent editor.", o: ["attend","attentive","attendant","attention"], a: 3,
+    why: "所有格後要名詞，<b>attention to detail</b>（注重細節）是固定說法。attendant 是「服務員」（人），語意不對。", zh: "哈森先生注重細節，所以是很出色的編輯。" },
+  { s: "Ms. Novak's ------- to the board was approved unanimously.", o: ["appoint","appointment","appointed","appointee"], a: 1,
+    why: "所有格後要名詞，而且是「被通過」的事，選 <b>appointment</b>（任命）。appointee 是被任命的人，人不會「被通過」。", zh: "諾瓦克女士進入董事會的任命獲得一致通過。" },
+  { s: "Several food ------- praised the restaurant's new menu.", o: ["critics","criticism","critical","criticize"], a: 0,
+    why: "主詞是會「稱讚」的人，而且 Several 後面接複數名詞，選 <b>critics</b>（評論家）。", zh: "幾位美食評論家稱讚了這間餐廳的新菜單。" },
+  { s: "The ------- of the two firms is expected to be completed by June.", o: ["merge","merging","merger","merged"], a: 2,
+    why: "<b>The ___ of</b> 要名詞，<b>merger</b>（合併案）。", zh: "兩家公司的合併預計在六月前完成。" },
+  { s: "Recent studies show that regular breaks can increase employee -------.", o: ["produce","productive","productively","productivity"], a: 3,
+    why: "<b>increase</b> 後面要名詞當受詞，employee 在這裡當形容詞用，所以要 <b>productivity</b>（生產力）。", zh: "近期研究顯示，定時休息能提升員工生產力。" },
+  { s: "The finance department will conduct an ------- of all travel expenses.", o: ["analyze","analysis","analyst","analytical"], a: 1,
+    why: "<b>conduct an ___ of</b> 要「事」的名詞 <b>analysis</b>。analyst 是分析師（人），不能被 conduct。", zh: "財務部將對所有差旅費用進行分析。" },
+  { s: "One of our ------- will contact you within 24 hours.", o: ["consult","consultation","consultants","consultative"], a: 2,
+    why: "<b>One of our + 複數名詞</b>，而且要能「聯絡你」，是人，選 <b>consultants</b>（顧問）。", zh: "我們的一位顧問將在 24 小時內與您聯絡。" },
+  { s: "The project required a ------- amount of time and money.", o: ["considerate","considerable","consideration","considerably"], a: 1,
+    why: "修飾名詞 amount 要形容詞。<b>considerable</b> = 相當大的；considerate = 體貼的，兩個都是形容詞，要看語意。", zh: "這個專案需要相當多的時間和金錢。" },
+  { s: "Please be ------- of other passengers and keep your voice down.", o: ["considerate","considerable","consideration","considerably"], a: 0,
+    why: "be 後面接形容詞，這裡說「體諒其他乘客」，用 <b>considerate</b>。和上一題 considerable 成對記。", zh: "請體諒其他乘客，降低說話音量。" },
+  { s: "The company provides ------- training to all new employees.", o: ["comprehend","comprehension","comprehensible","comprehensive"], a: 3,
+    why: "修飾名詞 training 要形容詞。<b>comprehensive</b> = 全面的；comprehensible = 可理解的。", zh: "公司為所有新進員工提供完整的訓練。" },
+  { s: "The candidates will be interviewed by their ------- department heads.", o: ["respectful","respectable","respective","respectively"], a: 2,
+    why: "修飾名詞要形容詞，三個 -ful / -able / -ive 意思都不同：<b>respective</b> = 各自的；respectful = 恭敬的；respectable = 體面的。", zh: "應徵者將分別由各自部門的主管面試。" }
+],
+ving: [
+  { s: "Ms. Yamada suggested ------- the meeting to Thursday afternoon.", o: ["move","to move","moving","moved"], a: 2,
+    why: "<b>suggest</b> 後面接 V-ing（或 suggest that S + 原形），不接 to V。", zh: "山田女士建議把會議移到週四下午。" },
+  { s: "The company cannot afford ------- any more delays on the project.", o: ["to have","have","having","had"], a: 0,
+    why: "<b>afford</b> 後面接 to V。", zh: "公司承擔不起專案再有任何延誤。" },
+  { s: "Mr. Brown is accustomed to ------- long hours during the busy season.", o: ["work","worked","working","works"], a: 2,
+    why: "<b>be accustomed to</b>（習慣於）的 to 是介系詞，接 V-ing。和 be used to 同一類。", zh: "布朗先生習慣在旺季長時間工作。" },
+  { s: "We would like to thank you for ------- part in our customer survey.", o: ["take","to take","taken","taking"], a: 3,
+    why: "介系詞 <b>for</b> 後面接 V-ing。", zh: "感謝您參與我們的顧客調查。" },
+  { s: "The manager let the employees ------- home early before the holiday.", o: ["go","going","to go","gone"], a: 0,
+    why: "使役動詞 <b>let + 人 + 原形</b>。", zh: "經理讓員工在假期前提早回家。" },
+  { s: "Please avoid ------- personal items in the conference room overnight.", o: ["leave","to leave","leaving","left"], a: 2,
+    why: "<b>avoid</b> 後面固定接 V-ing。", zh: "請避免把個人物品留在會議室過夜。" },
+  { s: "Despite the staff shortage, the team managed ------- the project ahead of schedule.", o: ["to complete","complete","completing","completed"], a: 0,
+    why: "<b>manage to V</b> = 設法做到。", zh: "儘管人手不足，團隊還是設法提前完成了專案。" },
+  { s: "In addition to ------- a competitive salary, the company offers flexible working hours.", o: ["provide","provided","providing","provision"], a: 2,
+    why: "<b>in addition to</b> 的 to 是介系詞，後面又有受詞 a competitive salary，要動名詞 <b>providing</b>。", zh: "除了提供有競爭力的薪資，公司也提供彈性工時。" },
+  { s: "Prior to ------- the laboratory, all visitors must put on protective glasses.", o: ["enter","entrance","entered","entering"], a: 3,
+    why: "<b>prior to</b>（= before）的 to 是介系詞。後面有受詞 the laboratory，所以用 <b>entering</b>，名詞 entrance 不能直接帶受詞。", zh: "進入實驗室前，所有訪客都必須戴上護目鏡。" },
+  { s: "The director agreed ------- the budget for the advertising campaign.", o: ["increase","increasing","to increase","increased"], a: 2,
+    why: "<b>agree</b> 後面接 to V。", zh: "主管同意增加廣告活動的預算。" },
+  { s: "Many employees have difficulty ------- work and family responsibilities.", o: ["balancing","balance","to balance","balanced"], a: 0,
+    why: "<b>have difficulty (in) + V-ing</b> = 做…有困難。同類：have trouble V-ing、spend time V-ing。", zh: "許多員工很難兼顧工作和家庭責任。" },
+  { s: "The new system will help employees ------- their working hours more accurately.", o: ["tracking","tracked","track","tracks"], a: 2,
+    why: "<b>help + 人 + (to) 原形</b>。選項沒有 to track，所以選原形 <b>track</b>。", zh: "新系統能幫助員工更準確地記錄工時。" },
+  { s: "The firm is dedicated to ------- high-quality service to every client.", o: ["deliver","delivered","delivery","delivering"], a: 3,
+    why: "<b>be dedicated to</b> 的 to 是介系詞。後面有受詞 high-quality service，用 <b>delivering</b>。", zh: "這家公司致力於為每位客戶提供高品質服務。" },
+  { s: "Ms. Ahmed is considering ------- a second store in the downtown area.", o: ["open","to open","opening","opened"], a: 2,
+    why: "<b>consider</b> 後面固定接 V-ing。", zh: "艾哈邁德女士正在考慮在市中心開第二家店。" },
+  { s: "Mr. Lopez objected to ------- the meeting without the regional managers.", o: ["holding","hold","held","be held"], a: 0,
+    why: "<b>object to</b>（反對）的 to 是介系詞，接 V-ing。", zh: "羅培茲先生反對在區域經理缺席的情況下開會。" },
+  { s: "The new regulations will make it easier for small businesses ------- loans.", o: ["obtain","obtaining","obtained","to obtain"], a: 3,
+    why: "<b>make it + 形容詞 + for 人 + to V</b>，it 是虛受詞，真正的受詞是後面的 to V。", zh: "新法規將讓小企業更容易取得貸款。" },
+  { s: "The supervisor would rather ------- the problem in person than by e-mail.", o: ["discuss","discussing","to discuss","discussed"], a: 0,
+    why: "<b>would rather + 原形</b> = 寧願。和 had better、would like to 一樣要分清楚後面接什麼。", zh: "主管寧願當面討論這個問題，而不是透過電子郵件。" },
+  { s: "Despite the snowstorm, the shop kept ------- customers throughout the day.", o: ["serve","to serve","served","serving"], a: 3,
+    why: "<b>keep + V-ing</b> = 持續做…。", zh: "儘管下大雪，這家店整天都持續接待客人。" },
+  { s: "The CEO is expected ------- the merger at tomorrow's press conference.", o: ["announce","to announce","announcing","announced"], a: 1,
+    why: "<b>be expected to V</b> = 預計會…。同類：be required to、be scheduled to、be supposed to。", zh: "執行長預計在明天的記者會上宣布合併案。" },
+  { s: "When it comes to ------- new clients, personal referrals are the most effective.", o: ["attract","attracting","attracted","attraction"], a: 1,
+    why: "<b>when it comes to</b> 的 to 是介系詞，接 V-ing。後面有受詞 new clients，所以不能用名詞 attraction。", zh: "說到吸引新客戶，親友介紹是最有效的。" }
+],
+relative: [
+  { s: "The employee ------- designed the new logo will receive an award.", o: ["whom","whose","who","which"], a: 2,
+    why: "後面 <b>designed the new logo</b> 缺主詞，先行詞是人，用 <b>who</b>。", zh: "設計新標誌的員工將獲頒獎項。" },
+  { s: "The candidate ------- we interviewed yesterday has accepted another offer.", o: ["whose","whom","where","what"], a: 1,
+    why: "<b>we interviewed</b> 缺受詞，先行詞是人，用受格 <b>whom</b>。", zh: "我們昨天面試的那位應徵者已經接受了別家的錄取。" },
+  { s: "Mr. Kato returned to the city ------- he had worked as a young engineer.", o: ["which","when","whose","where"], a: 3,
+    why: "<b>he had worked as a young engineer</b> 是完整句（work 不需要受詞），先行詞是地點，用 <b>where</b>。", zh: "加藤先生回到他年輕時當工程師的那座城市。" },
+  { s: "The company, ------- headquarters are in Singapore, has opened a new branch in Taipei.", o: ["which","its","whose","that"], a: 2,
+    why: "空格後直接接名詞 <b>headquarters</b>，「公司的總部」用 <b>whose</b>。its 不能連接兩個子句。", zh: "這家總部設在新加坡的公司在台北開了新分公司。" },
+  { s: "December is the month ------- most retailers earn the largest share of their annual revenue.", o: ["when","which","where","what"], a: 0,
+    why: "後面子句完整（earn 已有受詞 the largest share），先行詞是時間，用 <b>when</b>。", zh: "十二月是大多數零售商一年中營收最多的月份。" },
+  { s: "The report ------- you requested is attached to this e-mail.", o: ["where","what","whose","which"], a: 3,
+    why: "<b>you requested</b> 缺受詞（要求了什麼？），先行詞是物，用 <b>which</b>。", zh: "您要的報告附在這封電子郵件裡。" },
+  { s: "The reason ------- the event was postponed has not been announced.", o: ["why","which","what","whose"], a: 0,
+    why: "後面子句完整，先行詞是 <b>the reason</b>，用 <b>why</b>。", zh: "活動延期的原因尚未公布。" },
+  { s: "Ms. Park, ------- has worked here for twenty years, will retire next month.", o: ["that","whom","who","whose"], a: 2,
+    why: "後面缺主詞，先行詞是人，用 who。逗號後面不能用 that，所以選 <b>who</b>。", zh: "已經在這裡工作二十年的朴女士下個月要退休了。" },
+  { s: "------- was discussed at the meeting will be summarized in the minutes.", o: ["That","Which","Whose","What"], a: 3,
+    why: "前面沒有先行詞，<b>___ was discussed at the meeting</b> 整段當主詞，用 <b>What</b>（= the thing that）。", zh: "會議中討論的內容將整理在會議紀錄裡。" },
+  { s: "The conference room in ------- the interviews will take place is on the third floor.", o: ["that","which","where","whom"], a: 1,
+    why: "介系詞 <b>in</b> 後面接 which（物）或 whom（人）。in that、in where 都不成立。<b>in which</b> = where。", zh: "舉行面試的會議室在三樓。" },
+  { s: "Applicants ------- experience includes international sales are encouraged to apply.", o: ["whose","who","whom","which"], a: 0,
+    why: "空格後直接接名詞 <b>experience</b>，「應徵者的經驗」用所有格 <b>whose</b>。", zh: "具有國際業務經驗的應徵者歡迎應徵。" },
+  { s: "The supplier with ------- we have worked for years has raised its prices.", o: ["who","that","whose","whom"], a: 3,
+    why: "介系詞 <b>with</b> 後面指人要用 <b>whom</b>，不能用 who 或 that。", zh: "和我們合作多年的供應商調漲了價格。" },
+  { s: "This is the factory ------- produces most of the company's electronic components.", o: ["where","which","whose","what"], a: 1,
+    why: "<b>陷阱題：</b>先行詞是地點，但後面 <b>produces…</b> 缺主詞，所以用 <b>which</b>。where 後面要接完整句。", zh: "這就是生產公司大部分電子零件的工廠。" },
+  { s: "Please return the form to the office ------- you received it.", o: ["which","where","what","whose"], a: 1,
+    why: "<b>you received it</b> 是完整句（受詞 it 已經在），先行詞是地點，用 <b>where</b>。和上一題對照看。", zh: "請把表格交回你領取的那個辦公室。" },
+  { s: "The week ------- the new store opened was the busiest of the year.", o: ["which","where","when","whose"], a: 2,
+    why: "<b>the new store opened</b> 是完整句（open 在這裡不及物），先行詞是時間，用 <b>when</b>。", zh: "新店開幕的那週是一年中最忙的一週。" },
+  { s: "Most of the staff, many of ------- live in the suburbs, commute by train.", o: ["them","who","whom","which"], a: 2,
+    why: "<b>many of ___</b>：介系詞 of 後面指人用 <b>whom</b>。them 會讓句子有兩個動詞卻沒有連接詞。", zh: "大部分員工都搭火車通勤，其中很多人住在郊區。" },
+  { s: "The new manager has introduced several changes, ------- have improved efficiency.", o: ["that","it","what","which"], a: 3,
+    why: "逗號後面、缺主詞、先行詞是物，用 <b>which</b>。逗號後不能用 that。", zh: "新經理推動了幾項改變，這些改變提升了效率。" },
+  { s: "Anyone ------- wishes to attend the workshop should sign up by Friday.", o: ["who","whom","whose","whoever"], a: 0,
+    why: "先行詞 <b>Anyone</b> 是人，後面缺主詞，用 <b>who</b>。whoever 本身已含「任何人」，前面不能再有 anyone。", zh: "任何想參加工作坊的人都應在週五前報名。" },
+  { s: "The training manual explains ------- new employees should do on their first day.", o: ["that","which","what","where"], a: 2,
+    why: "前面沒有先行詞，<b>should do</b> 缺受詞，用 <b>what</b>（= the things that）。", zh: "訓練手冊說明了新進員工第一天該做的事。" },
+  { s: "Mr. Chen is the consultant ------- advice helped us reduce costs.", o: ["who","whose","whom","that"], a: 1,
+    why: "空格後直接接名詞 <b>advice</b>，「顧問的建議」用 <b>whose</b>。", zh: "陳先生就是那位以建議幫我們降低成本的顧問。" }
+],
+prep: [
+  { s: "------- completion of the training, participants will receive a certificate.", o: ["Since","While","Although","Upon"], a: 3,
+    why: "<b>Upon + 名詞</b> = 一…就…。While、Although 是連接詞，後面要接子句。", zh: "完成訓練後，學員將獲得證書。" },
+  { s: "The store will remain open ------- 10 P.M. during the holiday season.", o: ["by","within","until","since"], a: 2,
+    why: "<b>remain open</b> 是持續的狀態，用 <b>until</b>（一直到）。by 用在一次性動作的截止時間。", zh: "假期期間，商店將營業到晚上十點。" },
+  { s: "The museum will be closed to the public ------- the renovation.", o: ["while","during","since","among"], a: 1,
+    why: "後面是名詞 the renovation，用介系詞 <b>during</b>。while 是連接詞，要接子句。", zh: "博物館整修期間不對外開放。" },
+  { s: "------- the project was over budget, the client was satisfied with the results.", o: ["Despite","In spite of","Although","Because of"], a: 2,
+    why: "後面是子句（the project was…），要連接詞 <b>Although</b>。Despite、In spite of、Because of 都是介系詞。", zh: "雖然專案超出預算，客戶仍對成果感到滿意。" },
+  { s: "------- the absence of the director, Ms. Lin will chair the meeting.", o: ["On","In","At","By"], a: 1,
+    why: "<b>in the absence of</b> = 在…不在的時候，固定說法。", zh: "主任不在時，由林女士主持會議。" },
+  { s: "The package should arrive ------- three business days.", o: ["by","until","since","within"], a: 3,
+    why: "<b>within + 一段期間</b> = 在…之內。by 後面接時間點。", zh: "包裹應在三個工作天內送達。" },
+  { s: "Mr. Grant has worked for the company ------- 2015.", o: ["for","since","during","from"], a: 1,
+    why: "現在完成式 + 過去的時間點，用 <b>since</b>。for 接一段時間（for ten years）；from 要和 to 連用。", zh: "格蘭特先生從 2015 年起就在這家公司工作。" },
+  { s: "Full-time employees are eligible for the bonus ------- their position.", o: ["in spite","even though","whereas","regardless of"], a: 3,
+    why: "<b>regardless of + 名詞</b> = 不論…。in spite 少了 of；even though、whereas 是連接詞。", zh: "全職員工不論職位都有資格領取獎金。" },
+  { s: "------- receiving the shipment, please check all items for damage.", o: ["At","On","By","In"], a: 1,
+    why: "<b>On + V-ing</b> = Upon + V-ing = 一…就…。", zh: "收到貨物時，請檢查所有品項是否有損壞。" },
+  { s: "The seminar has been postponed ------- further notice.", o: ["by","within","until","since"], a: 2,
+    why: "<b>until further notice</b> = 直到另行通知，固定說法。", zh: "研討會延期，日期另行通知。" },
+  { s: "------- to the new policy, all visitors must wear a badge.", o: ["Regarding","According","Instead","Rather"], a: 1,
+    why: "<b>according to</b> = 根據。regarding 本身就是介系詞，不加 to；instead 要接 of；rather 要接 than。", zh: "根據新規定，所有訪客都必須配戴識別證。" },
+  { s: "------- the merger, the two companies operated independently.", o: ["Because","Prior to","Owing","Whereas"], a: 1,
+    why: "後面是名詞 the merger，要介系詞。<b>prior to</b> = before。Because、Whereas 是連接詞；owing 要接 to。", zh: "合併之前，兩家公司各自獨立營運。" },
+  { s: "Ms. Diaz will be in charge ------- the project while Mr. Wong is on leave.", o: ["for","with","of","on"], a: 2,
+    why: "<b>in charge of</b> = 負責…，固定搭配。", zh: "黃先生休假期間，由迪亞茲女士負責這個專案。" },
+  { s: "All prices listed in the catalog are subject ------- change without notice.", o: ["to","for","with","on"], a: 0,
+    why: "<b>be subject to + 名詞</b> = 可能會…、須經…。這個 to 是介系詞，change 在這裡是名詞。", zh: "目錄上的價格可能隨時變動，恕不另行通知。" },
+  { s: "------- of the entire staff, I would like to thank you for your support.", o: ["In case","Instead","In spite","On behalf"], a: 3,
+    why: "<b>on behalf of</b> = 代表…，商業書信常見。", zh: "我謹代表全體員工感謝您的支持。" },
+  { s: "The hotel provides a shuttle bus to the airport ------- request.", o: ["upon","at","of","under"], a: 0,
+    why: "<b>upon request</b> = 應要求、有需要時提供，固定說法。", zh: "飯店可應要求提供機場接駁車。" },
+  { s: "Construction of the bridge is ------- schedule and will be finished next month.", o: ["at","on","in","by"], a: 1,
+    why: "<b>on schedule</b> = 按照進度。也常考 ahead of schedule（提前）、behind schedule（落後）。", zh: "橋梁工程依進度進行，將在下個月完工。" },
+  { s: "The workshop was canceled ------- a lack of interest.", o: ["because","although","owing to","so that"], a: 2,
+    why: "後面是名詞 a lack of interest，要介系詞片語 <b>owing to</b>（= due to = because of）。", zh: "工作坊因報名人數不足而取消。" },
+  { s: "Customers can exchange defective items ------- charge within 14 days.", o: ["out of","free of","instead of","in case of"], a: 1,
+    why: "<b>free of charge</b> = 免費，固定說法。", zh: "顧客可在 14 天內免費更換瑕疵品。" },
+  { s: "The new branch is located ------- the bank and the post office.", o: ["among","along","between","across"], a: 2,
+    why: "看到 <b>A and B</b> 兩者，用 <b>between</b>。among 用在三者以上。", zh: "新分店位於銀行和郵局之間。" }
+]
+};
+TOPICS.forEach(t => { if (MORE[t.id]) t.qs.push(...MORE[t.id]); });
 
 const FAMILIES = [
   { root: "critic", rows: [["n. 人","critic","評論家"],["n. 事","criticism","批評"],["v.","criticize","批評（英式 criticise）"],["adj.","critical","批判的；關鍵的"],["adv.","critically","嚴重地；批判地"]] },
@@ -599,6 +857,13 @@ function topicStats(t) {
 function allQs() { return TOPICS.flatMap(t => t.qs.map((q, i) => ({ q, t, id: qid(t, i) }))); }
 function missed() { return allQs().filter(x => store[x.id] && store[x.id].last === false); }
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+/* 抽題順序：沒做過的 → 上次答錯的 → 其他，同一層裡隨機 */
+function pick(pool, n) {
+  const rank = x => { const r = store[x.id]; return !r ? 0 : r.last === false ? 1 : 2; };
+  return shuffle(pool).sort((a, b) => rank(a) - rank(b)).slice(0, n);
+}
+function topicQs(t) { return t.qs.map((q, i) => ({ q, t, id: qid(t, i) })); }
+function fmt(s) { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
 function head(label, i, n) {
   return `<button class="back" id="back">‹ 回首頁</button>
     <div class="qhead"><div class="progress"><i style="width:${i / n * 100}%"></i></div><span class="qcount">${i + 1} / ${n}</span></div>`;
@@ -612,6 +877,148 @@ function doneScreen(label, title, body, again) {
   app.querySelector("#home").onclick = home;
 }
 
+/* =================== MOCK EXAM =================== */
+const MOCK_PER = 6, MOCK_SECS = 600;
+function mockIntro() {
+  const fresh = allQs().filter(x => !store[x.id]).length;
+  const hist = (store._mocks || []).slice(-5).reverse();
+  screen(`
+    <button class="back" id="back">‹ 回首頁</button>
+    <header class="top"><span class="eyebrow">考前模擬</span><h2>Part 5 模擬考</h2></header>
+    <section class="panel">
+      <ul class="rules">
+        <li class="rule"><span class="if">30 題，限時 10 分鐘</span><span class="ex">和正式考試一樣，平均每題 20 秒。五個單元各 6 題，打散出題。</span></li>
+        <li class="rule"><span class="if">作答時不會告訴你對錯</span><span class="ex">可以跳題，也可以回頭改答案。交卷後再一起看分數和詳解。</span></li>
+        <li class="rule"><span class="if">沒做過的題目優先出</span><span class="ex">題庫還有 ${fresh} 題沒做過。答錯和沒作答的題目會收進錯題本。</span></li>
+      </ul>
+    </section>
+    ${hist.length ? `<section class="panel"><h3>最近成績</h3><ul class="hist">${hist.map(h => `<li><span class="muted">${h.d.slice(5).replace("-", "/")}</span><b>${h.score} / ${h.n}</b><span class="muted">用時 ${fmt(h.secs)}</span></li>`).join("")}</ul></section>` : ""}
+    <div class="actions"><button class="btn grow" id="go">開始計時</button></div>`);
+  bindBack();
+  app.querySelector("#go").onclick = mock;
+}
+function mock() {
+  const list = shuffle(TOPICS.flatMap(t => pick(topicQs(t), MOCK_PER)));
+  const n = list.length, ans = new Array(n).fill(-1);
+  const start = Date.now(); let i = 0, done = false, advance = null;
+  const left = () => MOCK_SECS - (Date.now() - start) / 1000;
+  const timerId = setInterval(tick, 250);
+  const stop = () => { clearInterval(timerId); clearTimeout(advance); };
+  /* 換題不經過 screen()，以免把計時器清掉；離開這個畫面時才停 */
+  function paint(html) { app.innerHTML = html; window.scrollTo({ top: 0 }); cleanup = stop; tick(); }
+  function tick() {
+    const s = left();
+    const c = app.querySelector("#clock"); if (c) { c.textContent = fmt(s); c.classList.toggle("low", s < 60); }
+    const b = app.querySelector("#timer i"); if (b) b.style.width = Math.max(0, s / MOCK_SECS * 100) + "%";
+    const t = app.querySelector("#timer"); if (t) t.classList.toggle("low", s < 60);
+    if (s <= 0) finish(true);
+  }
+  const answered = () => ans.filter(a => a >= 0).length;
+  function topbar() {
+    return `<div class="mockbar"><button class="back" id="back">‹ 離開</button><span class="clock" id="clock" aria-label="剩餘時間"></span></div>
+      <div class="timer" id="timer"><i></i></div>`;
+  }
+  function sheet() {
+    return `<section class="panel sheet"><div class="sheethead"><h3>答案卡</h3><span class="muted">已答 ${answered()} / ${n}</span></div>
+      <div class="sheetgrid">${list.map((_, k) => `<button data-j="${k}" class="${ans[k] >= 0 ? "filled" : ""}${k === i ? " cur" : ""}" aria-label="第 ${k + 1} 題${ans[k] >= 0 ? "，已作答" : ""}">${k + 1}</button>`).join("")}</div></section>`;
+  }
+  function bindCommon() {
+    app.querySelector("#back").onclick = () => { if (confirm("離開就會放棄這次模擬考，確定嗎？")) home(); };
+    app.querySelectorAll(".sheetgrid button").forEach(b => b.onclick = () => { i = +b.dataset.j; render(); });
+  }
+  function render() {
+    clearTimeout(advance);
+    const { q } = list[i];
+    paint(`${topbar()}
+      <article class="qcard">
+        <div class="qmeta"><span class="qno">第 ${i + 1} 題 / ${n}</span></div>
+        <p class="sentence">${sentenceHTML(q.s)}</p>
+        <div class="choices">
+          ${q.o.map((o, k) => `<button class="choice${ans[i] === k ? " picked" : ""}" data-k="${k}" aria-pressed="${ans[i] === k}"><span class="bubble">${L[k]}</span><span>${esc(o)}</span></button>`).join("")}
+        </div>
+      </article>
+      <div class="actions">
+        <button class="btn ghost grow" id="prev" ${i ? "" : "disabled"}>上一題</button>
+        <button class="btn grow" id="next">${i + 1 < n ? "下一題" : "交卷"}</button>
+      </div>
+      ${sheet()}`);
+    bindCommon();
+    app.querySelectorAll(".choice").forEach(b => b.onclick = () => {
+      ans[i] = +b.dataset.k;
+      app.querySelectorAll(".choice").forEach(x => { const on = +x.dataset.k === ans[i]; x.classList.toggle("picked", on); x.setAttribute("aria-pressed", on); });
+      if (i + 1 < n) advance = setTimeout(() => { i++; render(); }, 280);
+      app.querySelectorAll(".sheetgrid button")[i].classList.add("filled");
+    });
+    app.querySelector("#prev").onclick = () => { if (i) { i--; render(); } };
+    app.querySelector("#next").onclick = () => { if (i + 1 < n) { i++; render(); } else check(); };
+  }
+  function check() {
+    clearTimeout(advance);
+    const blank = n - answered();
+    if (!blank) { finish(false); return; }
+    i = ans.indexOf(-1);
+    paint(`${topbar()}
+      <section class="panel"><h3>還有 ${blank} 題沒作答</h3>
+        <p class="muted">答案卡上空白的就是還沒寫的。正式考試答錯不倒扣，沒把握也要猜一個。</p></section>
+      <div class="actions"><button class="btn grow" id="resume">回去作答</button><button class="btn ghost grow" id="submit">直接交卷</button></div>
+      ${sheet()}`);
+    bindCommon();
+    app.querySelector("#resume").onclick = render;
+    app.querySelector("#submit").onclick = () => finish(false);
+  }
+  function finish(timeUp) {
+    if (done) return; done = true; stop(); cleanup = null;
+    const secs = Math.min((Date.now() - start) / 1000, MOCK_SECS);
+    let score = 0;
+    list.forEach((x, k) => { const ok = ans[k] === x.q.a; if (ok) score++; record(x.id, ok); });
+    (store._mocks = store._mocks || []).push({ d: today(), score, n, secs: Math.round(secs) });
+    store._mocks = store._mocks.slice(-30); save();
+    mockResult(list, ans, score, secs, timeUp);
+  }
+  render();
+}
+function mockResult(list, ans, score, secs, timeUp) {
+  const n = list.length;
+  const by = TOPICS.map(t => { const xs = list.map((x, k) => ({ x, k })).filter(o => o.x.t === t); return { t, ok: xs.filter(o => ans[o.k] === o.x.q.a).length, n: xs.length }; });
+  const weak = by.filter(b => b.ok < b.n).sort((a, b) => a.ok / a.n - b.ok / b.n)[0];
+  const item = (x, k) => {
+    const a = ans[k], ok = a === x.q.a;
+    return `<li class="rev ${ok ? "ok" : "no"}" data-ok="${ok}">
+      <details ${ok ? "" : "open"}>
+        <summary><span class="qno">${k + 1}.</span> ${sentenceHTML(x.q.s, x.q.o[x.q.a])}</summary>
+        <div class="revbody">
+          <p>${a < 0 ? `<span class="bad">沒作答</span>` : ok ? `<span class="good">答對 (${L[a]}) ${esc(x.q.o[a])}</span>` : `你選 <span class="bad">(${L[a]}) ${esc(x.q.o[a])}</span>，正解 <span class="good">(${L[x.q.a]}) ${esc(x.q.o[x.q.a])}</span>`} <span class="tag">${x.t.name}</span></p>
+          <p>${x.q.why}</p><p class="muted">${x.q.zh}</p>
+        </div>
+      </details></li>`;
+  };
+  screen(`
+    <header class="top"><span class="eyebrow">模擬考 · 結果</span><h2>${timeUp ? "時間到，已自動交卷" : score === n ? "全對，準備好了！" : "交卷完成"}</h2></header>
+    <section class="panel">
+      <div class="score">${score}<small> / ${n}</small></div>
+      <p class="muted">用時 ${fmt(secs)}（限時 10:00），平均每題 ${(secs / n).toFixed(1)} 秒。</p>
+      <div class="breakdown">${by.map(b => `<div class="brow"><span>${b.t.name}</span><span class="meter"><span>${b.ok}/${b.n}</span><i style="--p:${Math.round(b.ok / b.n * 100)}%"></i></span></div>`).join("")}</div>
+      ${weak ? `<p class="tip"><strong>最需要加強：</strong>${weak.t.name}。可以先回單元看重點，再練錯題本。</p>` : ""}
+    </section>
+    <section class="panel">
+      <div class="sheethead"><h3>詳解</h3>
+        <div class="seg" role="group" aria-label="篩選"><button data-f="no" aria-pressed="true">錯題 ${n - score}</button><button data-f="all" aria-pressed="false">全部 ${n}</button></div></div>
+      <ul class="revlist">${list.map(item).join("")}</ul>
+      <p class="muted" id="none" ${score === n ? "" : "hidden"}>這回沒有錯題。</p>
+    </section>
+    <div class="actions"><button class="btn grow" id="again">再考一回</button><button class="btn ghost grow" id="home">回首頁</button></div>`);
+  const seg = app.querySelectorAll(".seg button");
+  const filter = f => {
+    seg.forEach(b => b.setAttribute("aria-pressed", b.dataset.f === f));
+    app.querySelectorAll(".rev").forEach(li => li.hidden = f === "no" && li.dataset.ok === "true");
+    app.querySelector("#none").hidden = !(f === "no" && score === n);
+  };
+  seg.forEach(b => b.onclick = () => filter(b.dataset.f));
+  filter("no");
+  app.querySelector("#again").onclick = mockIntro;
+  app.querySelector("#home").onclick = home;
+}
+
 /* =================== HOME =================== */
 const MODES = [
   { id: "clue", name: "線索偵探", d: "先點出決定答案的那個字，再作答。練的是解題的眼睛。", for: ["全部單元"], run: () => clueMode() },
@@ -619,7 +1026,7 @@ const MODES = [
   { id: "sort", name: "詞性分類", d: "一個字跳出來，判斷 n. v. adj. adv.，專抓 -ly、-al、-ive 陷阱。", for: ["詞性","形副"], run: () => sortMode() },
   { id: "cards", name: "搭配閃卡", d: "consider + ？翻卡記搭配，不熟的會再出現。", for: ["V-ing","介系詞"], run: () => cardMode() },
   { id: "tree", name: "關係詞判斷流程", d: "照步驟問自己三個問題，選出 which / where / whose。", for: ["關係詞"], run: () => treeMode() },
-  { id: "speed", name: "20 秒限時", d: "正式考試 Part 5 每題約 20 秒。計時作答，練反應速度。", for: ["全部單元"], run: () => quiz(shuffle(allQs()).slice(0, 10), "20 秒限時", 20) },
+  { id: "speed", name: "20 秒限時", d: "正式考試 Part 5 每題約 20 秒。計時作答，練反應速度。", for: ["全部單元"], run: () => quiz(pick(allQs(), 10), "20 秒限時", 20) },
   { id: "cheat", name: "重點速查", d: "五個單元的規則一頁看完，考前快速複習。", for: ["全部單元"], run: () => cheat() }
 ];
 function home() {
@@ -627,17 +1034,22 @@ function home() {
   const tried = all.filter(x => store[x.id]).length;
   const miss = missed().length;
   const st = streak();
+  const lastMock = (store._mocks || []).slice(-1)[0];
   screen(`
     <header class="top">
       <span class="eyebrow">TOEIC Reading · Part 5</span>
       <h1>多益 Part 5 特訓</h1>
-      <p class="muted">先從單元看重點、做題，再用不同的練習方式加強。答錯的題目會自動收進錯題本。</p>
+      <p class="muted">先從單元看重點、做題，再用不同的練習方式加強。出題時沒做過的題目優先，答錯的會自動收進錯題本。</p>
       <div class="stats">
         <span class="stat">連續練習 <b>${st}</b> 天</span>
         <span class="stat">已練 <b>${tried}</b> / ${all.length} 題</span>
         <span class="stat">錯題本 <b>${miss}</b> 題</span>
       </div>
     </header>
+    <button class="mockcta" id="mock">
+      <span class="t"><strong>Part 5 模擬考</strong><span>30 題 · 限時 10 分鐘 · 交卷後看詳解${lastMock ? ` · 上次 ${lastMock.score}/${lastMock.n}` : ""}</span></span>
+      <span class="go" aria-hidden="true">›</span>
+    </button>
     <div class="section-title"><h3>單元練習</h3><span class="muted" style="font-size:.88rem">重點說明＋多益題型</span></div>
     <div class="topics">
       ${TOPICS.map((t, i) => { const s = topicStats(t); const p = Math.round(s.ok / s.total * 100); return `
@@ -659,7 +1071,8 @@ function home() {
   const lo = app.querySelector("#logout"); if (lo) lo.onclick = logout;
   app.querySelectorAll(".topic").forEach(b => b.onclick = () => lesson(TOPICS[+b.dataset.t]));
   app.querySelectorAll(".mode").forEach(b => b.onclick = () => MODES[+b.dataset.m].run());
-  app.querySelector("#mix").onclick = () => quiz(shuffle(allQs()).slice(0, 10), "綜合練習");
+  app.querySelector("#mix").onclick = () => quiz(pick(allQs(), 10), "綜合練習");
+  app.querySelector("#mock").onclick = mockIntro;
   app.querySelector("#review").onclick = () => quiz(shuffle(missed()), "錯題本");
 }
 
@@ -684,9 +1097,13 @@ function lesson(t) {
       <table class="fam" id="fam"></table>
       <span class="eyebrow">長得像、意思不同</span>${twinsHTML()}
     </section>` : ""}
-    <div class="actions"><button class="btn grow" id="go">開始練習（${t.qs.length} 題）</button></div>`);
+    <div class="actions">
+      <button class="btn grow" id="go">練 10 題（沒做過的優先）</button>
+      <button class="btn ghost grow" id="all">全部 ${t.qs.length} 題</button>
+    </div>`);
   bindBack();
-  app.querySelector("#go").onclick = () => quiz(t.qs.map((q, i) => ({ q, t, id: qid(t, i) })), t.name);
+  app.querySelector("#go").onclick = () => quiz(pick(topicQs(t), 10), t.name);
+  app.querySelector("#all").onclick = () => quiz(topicQs(t), t.name);
   if (t.family) {
     const tabs = app.querySelectorAll(".fam-tabs button");
     const show = i => {
