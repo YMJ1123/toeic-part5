@@ -275,6 +275,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outlin
 .revbody .good { color: var(--ok); font-weight: 600; }
 .revbody .bad { color: var(--bad); font-weight: 600; }
 .revbody b { font-weight: 600; }
+.sharebox { display: flex; flex-direction: column; gap: 6px; align-items: stretch; text-align: center; font-size: 0.85rem; }
+.meter.wide { width: auto; flex: 1; }
+.hist li .meter.wide { align-items: stretch; }
 .foot { font-size: 0.8rem; color: var(--muted); text-align: center; }
 /* login gate */
 .gate { min-height: 75vh; display: flex; align-items: center; justify-content: center; }
@@ -804,7 +807,7 @@ function gate() {
     if (ok) {
       try { localStorage.setItem(GATE_KEY, GATE.hash); } catch (err) {}
       msg.className = "msg ok"; msg.textContent = "答對了，歡迎回來！";
-      setTimeout(home, 700);
+      setTimeout(start, 700);
     } else {
       msg.className = "msg"; msg.textContent = "不是這天喔，再想想看"; input.value = "";
       card.classList.remove("shake"); void card.offsetWidth; card.classList.add("shake");
@@ -1006,7 +1009,8 @@ function mockResult(list, ans, score, secs, timeUp) {
       <ul class="revlist">${list.map(item).join("")}</ul>
       <p class="muted" id="none" ${score === n ? "" : "hidden"}>這回沒有錯題。</p>
     </section>
-    <div class="actions"><button class="btn grow" id="again">再考一回</button><button class="btn ghost grow" id="home">回首頁</button></div>`);
+    <div class="actions"><button class="btn grow" id="again">再考一回</button><button class="btn ghost grow" id="share">傳送這次成績</button><button class="btn ghost grow" id="home">回首頁</button></div>`);
+  app.querySelector("#share").onclick = e => shareProgress(e.currentTarget);
   const seg = app.querySelectorAll(".seg button");
   const filter = f => {
     seg.forEach(b => b.setAttribute("aria-pressed", b.dataset.f === f));
@@ -1017,6 +1021,89 @@ function mockResult(list, ans, score, secs, timeUp) {
   filter("no");
   app.querySelector("#again").onclick = mockIntro;
   app.querySelector("#home").onclick = home;
+}
+
+/* =================== PROGRESS REPORT (shared by link) =================== */
+/* 進度整包放在網址的 # 後面：不會送到任何伺服器，收到連結的人打開就能看 */
+function buildReport() {
+  const all = allQs();
+  let n = 0, wrong = 0;
+  all.forEach(x => { const r = store[x.id]; if (r) { n += r.n; wrong += r.wrong; } });
+  return {
+    v: 1, t: Date.now(), s: streak(), d: (store._days || []).length, n, c: n - wrong,
+    m: (store._mocks || []).slice(-10).map(m => [m.d, m.score, m.n, m.secs]),
+    u: TOPICS.map(t => { const xs = topicQs(t); return [t.id, xs.filter(x => store[x.id] && store[x.id].last).length, xs.filter(x => store[x.id]).length]; }),
+    w: missed().sort((a, b) => store[b.id].wrong - store[a.id].wrong).slice(0, 12).map(x => [x.id, store[x.id].wrong])
+  };
+}
+function encodeReport(r) { return btoa(unescape(encodeURIComponent(JSON.stringify(r)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function decodeReport(s) {
+  try { return JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, "+").replace(/_/g, "/"))))); } catch (e) { return null; }
+}
+function pct(a, b) { return b ? Math.round(a / b * 100) : 0; }
+function summaryText(r) {
+  const last = r.m[r.m.length - 1];
+  return `多益練習進度：連續 ${r.s} 天，總共作答 ${r.n} 次（正確率 ${pct(r.c, r.n)}%）` +
+    (last ? `，模擬考上次 ${last[1]}/${last[2]}` : "") + `，錯題本 ${missed().length} 題。`;
+}
+async function shareProgress(btn) {
+  const r = buildReport();
+  const url = location.origin + location.pathname + "#r=" + encodeReport(r);
+  const text = summaryText(r);
+  if (navigator.share) {
+    try { await navigator.share({ title: "多益練習進度", text, url }); return; }
+    catch (e) { if (e && e.name === "AbortError") return; }
+  }
+  try {
+    await navigator.clipboard.writeText(text + "\n" + url);
+    const old = btn.textContent; btn.textContent = "已複製，貼到 LINE 傳出去"; setTimeout(() => { btn.textContent = old; }, 2500);
+  } catch (e) { window.prompt("複製這個連結傳出去：", url); }
+}
+function findQ(id) {
+  const [tid, i] = id.split(":"); const t = TOPICS.find(x => x.id === tid);
+  return t && t.qs[+i] ? { t, q: t.qs[+i] } : null;
+}
+function report(r) {
+  const when = new Date(r.t);
+  const stamp = `${when.getMonth() + 1}/${when.getDate()} ${String(when.getHours()).padStart(2, "0")}:${String(when.getMinutes()).padStart(2, "0")}`;
+  const mocks = r.m.slice().reverse();
+  const best = r.m.length ? Math.max(...r.m.map(m => m[1])) : 0;
+  screen(`
+    <header class="top">
+      <span class="eyebrow">進度報告 · ${stamp} 傳出</span>
+      <h2>多益 Part 5 練習進度</h2>
+      <div class="stats">
+        <span class="stat">連續練習 <b>${r.s}</b> 天</span>
+        <span class="stat">共練了 <b>${r.d}</b> 天</span>
+        <span class="stat">作答 <b>${r.n}</b> 次</span>
+        <span class="stat">正確率 <b>${pct(r.c, r.n)}%</b></span>
+      </div>
+    </header>
+    <section class="panel">
+      <div class="sheethead"><h3>模擬考</h3>${r.m.length ? `<span class="muted">最高 ${best} / 30</span>` : ""}</div>
+      ${mocks.length ? `<ul class="hist">${mocks.map(m => `<li><span class="muted">${m[0].slice(5).replace("-", "/")}</span>
+        <span class="meter wide"><span><b>${m[1]}</b> / ${m[2]}</span><i style="--p:${pct(m[1], m[2])}%"></i></span>
+        <span class="muted">${fmt(m[3])}</span></li>`).join("")}</ul>` : `<p class="muted">還沒考過模擬考。</p>`}
+    </section>
+    <section class="panel">
+      <h3>各單元</h3>
+      <div class="breakdown">${r.u.map(u => { const t = TOPICS.find(x => x.id === u[0]); if (!t) return ""; return `
+        <div class="brow"><span>${t.name}<br><span class="muted" style="font-size:.8rem">做過 ${u[2]} / ${t.qs.length} 題</span></span>
+        <span class="meter"><span>答對 ${u[1]}</span><i style="--p:${pct(u[1], t.qs.length)}%"></i></span></div>`; }).join("")}</div>
+      <p class="muted" style="font-size:.85rem">「答對」是最近一次作答答對的題數，長條以單元總題數計算。</p>
+    </section>
+    <section class="panel">
+      <h3>目前還會錯的題目</h3>
+      ${r.w.length ? `<ul class="misslist">${r.w.map(([id, k]) => { const f = findQ(id); if (!f) return ""; return `<li>${sentenceHTML(f.q.s, f.q.o[f.q.a])}<br>
+        <span class="muted">正解 <b>${esc(f.q.o[f.q.a])}</b> · ${f.t.name} · 錯過 ${k} 次</span></li>`; }).join("")}</ul>` : `<p class="muted">錯題本是空的，目前沒有還會錯的題目。</p>`}
+    </section>
+    <div class="actions"><button class="btn ghost grow" id="home">回首頁</button></div>`);
+  app.querySelector("#home").onclick = () => { try { history.replaceState(null, "", location.pathname); } catch (e) {} home(); };
+}
+function start() {
+  const m = location.hash.match(/^#r=([\w-]+)/);
+  const r = m && decodeReport(m[1]);
+  if (r && r.v === 1) report(r); else home();
 }
 
 /* =================== HOME =================== */
@@ -1067,8 +1154,13 @@ function home() {
     <div class="modes">
       ${MODES.map((m, i) => `<button class="mode" data-m="${i}"><strong>${m.name}</strong><span class="d">${m.d}</span><span class="for">${m.for.map(f => `<span class="tag">${f}</span>`).join("")}</span></button>`).join("")}
     </div>
+    <div class="sharebox">
+      <button class="btn ghost grow" id="share">傳送練習進度</button>
+      <span class="muted">產生一個進度報告連結，可以用 LINE 或訊息傳出去。</span>
+    </div>
     <p class="foot">進度只存在這台裝置的瀏覽器裡。${GATE.hash ? `<br><button class="linkbtn" id="logout">登出</button>` : ""}</p>`);
   const lo = app.querySelector("#logout"); if (lo) lo.onclick = logout;
+  app.querySelector("#share").onclick = e => shareProgress(e.currentTarget);
   app.querySelectorAll(".topic").forEach(b => b.onclick = () => lesson(TOPICS[+b.dataset.t]));
   app.querySelectorAll(".mode").forEach(b => b.onclick = () => MODES[+b.dataset.m].run());
   app.querySelector("#mix").onclick = () => quiz(pick(allQs(), 10), "綜合練習");
@@ -1409,6 +1501,6 @@ function cheat() {
   bindBack();
 }
 
-if (!GATE.hash || unlocked()) home(); else gate();
+if (!GATE.hash || unlocked()) start(); else gate();
 </script>
 </body></html>
